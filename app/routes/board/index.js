@@ -49,6 +49,11 @@ const editTaskboard = (e, {store}) => {
     store.toggle('$list.edit')
 };
 
+const subtaskStyle = {
+  "margin-left": "10px",
+  border: "5px solid pink"
+};
+
 export default (
   <cx>
     <div
@@ -122,6 +127,16 @@ export default (
                   }}
                 >
                   <MenuItem pad={false}>
+                    <Task
+                      bind="$task"
+                      styleRules:bind="settings.taskStyles"
+                      autoFocus:expr="{activeTaskId}=={$task.id}"
+                      isNew:expr="{newTaskId}=={$task.id}"
+                      onKeyDown="onTaskKeyDown"
+                      onSave="onSaveTask"
+                    />
+                  </MenuItem>
+                  <MenuItem style={subtaskStyle} pad={false}>
                     <Task
                       bind="$task"
                       styleRules:bind="settings.taskStyles"
