@@ -4,7 +4,6 @@ import {KeyCode, closest} from "cx/util";
 
 import uid from "uid";
 import {firestore} from "../../data/db/firestore";
-
 const mergeFirestoreSnapshot = (prevList, snapshot, name) => {
     //TODO: Impement a more efficient data merge strategy
     let result = [];
@@ -62,7 +61,9 @@ export default ({ref, get, set}) => {
             .update(list);
     }
 
-    const prepareTask = (listId) => {
+    // increease order and generate new task id
+    // @partnerId is used to indicate subtask parent
+    const prepareTask = (listId, parentId=0) => {
         let order = getSortedTaskOrderList(listId);
         let maxOrder = order[order.length - 1] || 0;
         let id = uid();
@@ -71,7 +72,8 @@ export default ({ref, get, set}) => {
             id,
             listId,
             createdDate: new Date().toISOString(),
-            order: maxOrder + 1
+            order: maxOrder + 1,
+            parentId: parentId,
         };
 
     };
@@ -169,6 +171,21 @@ export default ({ref, get, set}) => {
                 .collection("tasks")
                 .doc(task.id)
                 .set(task);
+        },
+
+        addSubtaskTask(e, {store}) {
+            e.preventDefault();
+            let listId = store.get("$list.id");
+            //if exist first element on list, if no, then add as task
+            if (tasks.get()[0]!=null) {
+                let task = prepareTask(listId, tasks.get()[0].id);
+                // console.log(tasks.get()[0].id);
+                tasks.append(task);
+                boardDoc
+                .collection("tasks")
+                .doc(task.id)
+                .set(task);
+            }
         },
 
         moveTaskUp(e, {store}) {
