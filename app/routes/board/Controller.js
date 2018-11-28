@@ -78,6 +78,17 @@ export default ({ref, get, set}) => {
 
     };
 
+    const getNotDeletedUpperTaskId = (list) => {
+       var foundedMainTaskToAdd=0;
+        list.forEach(element => {
+            console.log(element)
+            if(element.deleted!=false){
+                foundedMainTaskToAdd = element.id;
+            }
+        });
+      return foundedMainTaskToAdd;
+    };
+
     const getSortedTaskOrderList = (listId) => {
         return getOrderList(tasks.get(), t => t.listId == listId);
     };
@@ -176,10 +187,10 @@ export default ({ref, get, set}) => {
         addSubtaskTask(e, {store}) {
             e.preventDefault();
             let listId = store.get("$list.id");
-            //if exist first element on list, if no, then add as task
-            if (tasks.get()[0]!=null) {
-                let task = prepareTask(listId, tasks.get()[0].id);
-                // console.log(tasks.get()[0].id);
+            //only if exist first element on list
+
+            if (tasks.get()!=null) {
+                console.log(getNotDeletedUpperTaskId(tasks.get()));
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
