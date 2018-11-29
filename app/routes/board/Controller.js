@@ -318,10 +318,9 @@ export default ({ref, get, set}) => {
                     updateTask(nt);
                     break;
 
-                // case KeyCode.right:
-                    // this.addSubtaskTask(e, instance);
-                // if (e.ctrlKey)
-                    // break;
+                // case code("O"):
+                //     this.addSubtaskTask(e, instance);
+                //     break;
 
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
@@ -333,7 +332,6 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.right:
                     if (e.ctrlKey) this.moveTaskRight(e, instance);
-                    else this.makeTaskSubtask(e, instance);
                     break;
 
                 case KeyCode.left:
