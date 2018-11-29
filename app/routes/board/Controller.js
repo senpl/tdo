@@ -79,41 +79,38 @@ export default ({ref, get, set}) => {
     };
 
     const getNotDeletedUpperTaskId = (list) => {
-       var foundedMainTaskToAdd=0;
+        var foundedMainTaskToAdd=0;
         list.forEach(element => {
             console.log(element)
             if(element.deleted!=false){
                 foundedMainTaskToAdd = element.id;
             }
         });
-      return foundedMainTaskToAdd;
+        return foundedMainTaskToAdd;
     };
 
- const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
-   var foundedMainTaskToAdd = 0;
-   var finalUpperId=-1;
-   list.forEach(element => {
-    //         console.log("taskId");
-    //         console.log(taskId);
-    //  console.log(element.id);
-     if (element.deleted != false) {
-       foundedMainTaskToAdd = element.id;
-     }
-     if(element.id===taskId){
-         finalUpperId = foundedMainTaskToAdd;
-     }
-   });
-   return finalUpperId;
- };
+    const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
+        var foundedMainTaskToAdd = 0;
+        var finalUpperId=-1;
+        list.forEach(element => {
+        if (element.deleted != false) {
+            foundedMainTaskToAdd = element.id;
+        }
+        if(element.id===taskId){
+            finalUpperId = foundedMainTaskToAdd;
+        }
+    });
+    return finalUpperId;
+    };
 
     const getSortedTaskOrderList = (listId) => {
         return getOrderList(tasks.get(), t => t.listId == listId);
     };
 
-      const makeTaskSubtask = (list,taskId) => {
-          var upperId = getNotDeletedUpperTaskIdForList(list.taskId);
+    const makeTaskSubtask = (list,taskId) => {
+        var upperId = getNotDeletedUpperTaskIdForList(list.taskId);
         return upperId;
-      };
+    };
 
     const moveTaskToList = (taskId, listId) => {
         let order = getSortedTaskOrderList(listId);
@@ -210,10 +207,8 @@ export default ({ref, get, set}) => {
             e.preventDefault();
             let listId = store.get("$list.id");
             //only if exist first element on list
-
             if (tasks.get()!=null) {
-                console.log(getNotDeletedUpperTaskId(tasks.get()));
-                // getNotDeletedUpperTaskId(tasks.get(),ta)
+                // console.log(getNotDeletedUpperTaskId(tasks.get()));
                 let task = prepareTask(listId);
                 tasks.append(task);
                 boardDoc
@@ -227,22 +222,9 @@ export default ({ref, get, set}) => {
             e.stopPropagation();
             e.preventDefault();
             let {$task} = store.getData();
-            // let {listId} = store.getData();
             let aboveId=getNotDeletedUpperTaskIdForList(
                 tasks.get(),$task.id);
-            // console.log(result);
-            // tasks.get();
-            // tasks.get().forEach(element => {
-            //   console.log(element.name);
-            // });
-            // let { $page.tasks } = store.getData();
-// console.log($page);
-            // let previousTaskId = makeTaskSubtask($list,$task.id);
-            // console.log(previousTaskId);
-            // let order = getSortedTaskOrderList($task.listId);
-            // let newOrder = getPrevOrder($task.order, order);
             updateTask({ ...$task, parentId: aboveId });
-              // order: newOrder
         },
 
         moveTaskUp(e, {store}) {
@@ -319,7 +301,7 @@ export default ({ref, get, set}) => {
 
                     break;
 
-                // case KeyCode.insert:
+                case KeyCode.insert:
                 case code("O"):
                     let nt = prepareTask(t.listId);
                     let order = getSortedTaskOrderList(t.listId);
@@ -336,11 +318,10 @@ export default ({ref, get, set}) => {
                     updateTask(nt);
                     break;
 
-                case KeyCode.right:
+                // case KeyCode.right:
                     // this.addSubtaskTask(e, instance);
                 // if (e.ctrlKey)
-                    this.makeTaskSubtask(e, instance);
-                    break;
+                    // break;
 
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
@@ -352,11 +333,12 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.right:
                     if (e.ctrlKey) this.moveTaskRight(e, instance);
+                    else this.makeTaskSubtask(e, instance);
                     break;
 
-                // case KeyCode.left:
-                //     if (e.ctrlKey) this.moveTaskLeft(e, instance);
-                //     break;
+                case KeyCode.left:
+                    if (e.ctrlKey) this.moveTaskLeft(e, instance);
+                    break;
             }
         },
 
