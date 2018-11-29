@@ -12,7 +12,6 @@ let searchQuery = null;
 let mainTaskId = 0;
 
 function filterItems(item, {search, list, settings}) {
-    if (item.parentId != 0) return false;
     mainTaskId=item.id;
     if (item.deleted || item.listId != list.id)
         return false;
@@ -38,39 +37,6 @@ function filterItems(item, {search, list, settings}) {
     return true;
 }
 
-function filterSubtasks(item, { search, list, settings, thisTask }) {
-  if(item.parentId==0) return false;
-  if (item.deleted || item.listId != list.id) return false;
-console.log(item);
-if (item.parentId != mainTaskId){
-//   // console.log("thisTask");
-//   // console.log(mainTaskId);
-//   // console.log("parentId");
-//   // console.log(item.parentId);
-  // return false;
-}
-//  console.log("thisTask");
-// console.log(mainTaskId);
-  // if (!settings) settings = {};
-
-  // if (!item.isNew && search && search.query) {
-  //   if (searchQuery != search.query) {
-  //     searchTerms = search.query.split(" ").map(w => new RegExp(w, "gi"));
-  //     searchQuery = search.query;
-  //   }
-  //   return item.name && searchTerms.every(ex => item.name.match(ex));
-  // }
-
-  // if (item.completed && item.completedDate) {
-  //   let now = new Date().getTime();
-  //   let cmp = Date.parse(item.completedDate);
-  //   if (cmp + settings.completedTasksRetentionDays * 24 * 60 * 60 * 1000 < now)
-  //     return false;
-  // }
-
-  return true;
-}
-
 function filterBoards(b, activeBoardId) {
     return b.id == activeBoardId && !b.deleted;
 }
@@ -82,6 +48,16 @@ function filterLists(l, activeBoardId) {
 const editTaskboard = (e, {store}) => {
     e.preventDefault();
     store.toggle('$list.edit')
+};
+
+const styleSubtaskWhenNeeded = (item)=>
+{
+  let styleTask = "";
+  let { $task } = item;
+  console.log($task.parentId);
+  if ($task.parentId != 0)
+  styleTask=subtaskStyle;
+  return styleTask;
 };
 
 const subtaskStyle = {
@@ -145,9 +121,6 @@ export default (
                 onKeyDown="onTaskListKeyDown"
                 itemPadding="small"
               >
-                <a class="cxe-tasklist-add" onClick="addSubtaskTask" href="#">
-                  Add SubTask
-                </a>
                 <Repeater
                   records:bind="$page.tasks"
                   recordName="$task"
@@ -158,10 +131,11 @@ export default (
                   filterParams={{
                     list: { bind: "$list" },
                     search: { bind: "search" },
-                    settings: { bind: "settings" }
+                    settings: { bind: "settings" },
+                    pageTasks: {bind: "$page.tasks"}
                   }}
                 >
-                  <MenuItem pad={false}>
+                  <MenuItem style={styleSubtaskWhenNeeded} pad={false}>
                     <Task
                       bind="$task"
                       styleRules:bind="settings.taskStyles"
@@ -171,35 +145,11 @@ export default (
                       onSave="onSaveTask"
                     />
                   </MenuItem>
-                  <Repeater
-                    records:bind="$page.tasks"
-                    recordName="$task"
-                    keyField="id"
-                    sortField="order"
-                    sortDirection="ASC"
-                    filter={filterSubtasks}
-                    filterParams={{
-                      list: { bind: "$list" },
-                      search: { bind: "search" },
-                      settings: { bind: "settings" },
-                      thisTask: { bind: "$page.tasks" }
-                    }}
-                  >
-                    <MenuItem style={subtaskStyle} pad={false}>
-                      <Task
-                        bind="$task"
-                        styleRules:bind="settings.taskStyles"
-                        autoFocus:expr="{activeTaskId}=={$task.id}"
-                        isNew:expr="{newTaskId}=={$task.id}"
-                        onKeyDown="onTaskKeyDown"
-                        onSave="onSaveTask"
-                      />
-                    </MenuItem>
-                  </Repeater>
                 </Repeater>
                 <a class="cxe-tasklist-add" onClick="addTask" href="#">
                   Add Task
                 </a>
+                
               </Menu>
             </div>
           </Repeater>
