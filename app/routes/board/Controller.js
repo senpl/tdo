@@ -78,16 +78,16 @@ export default ({ref, get, set}) => {
 
     };
 
-    const getNotDeletedUpperTaskId = (list) => {
-        var foundedMainTaskToAdd=0;
-        list.forEach(element => {
-            console.log(element)
-            if(element.deleted!=false){
-                foundedMainTaskToAdd = element.id;
-            }
-        });
-        return foundedMainTaskToAdd;
-    };
+    // const getNotDeletedUpperTaskId = (list) => {
+    //     var foundedMainTaskToAdd=0;
+    //     list.forEach(element => {
+    //         console.log(element)
+    //         if(element.deleted!=false){
+    //             foundedMainTaskToAdd = element.id;
+    //         }
+    //     });
+    //     return foundedMainTaskToAdd;
+    // };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
         var foundedMainTaskToAdd = 0;
@@ -204,18 +204,17 @@ export default ({ref, get, set}) => {
         },
 
         addSubtaskTask(e, {store}) {
-            e.preventDefault();
-            let listId = store.get("$list.id");
-            //only if exist first element on list
-            if (tasks.get()!=null) {
-                // console.log(getNotDeletedUpperTaskId(tasks.get()));
-                let task = prepareTask(listId);
+                e.preventDefault();
+                let {$task} = store.getData();
+                let aboveId=getNotDeletedUpperTaskIdForList(
+                    tasks.get(),$task.id);
+                let listId = store.get("$list.id");
+                let task = prepareTask(listId,aboveId);    
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
                 .doc(task.id)
                 .set(task);
-            }
         },
 
         makeTaskSubtask(e, {store}) {
@@ -318,10 +317,9 @@ export default ({ref, get, set}) => {
                     updateTask(nt);
                     break;
 
-                // case KeyCode.right:
-                    // this.addSubtaskTask(e, instance);
-                // if (e.ctrlKey)
-                    // break;
+                case KeyCode.right:
+                    this.addSubtaskTask(e, instance);
+                    break;
 
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
@@ -331,10 +329,10 @@ export default ({ref, get, set}) => {
                     if (e.ctrlKey) this.moveTaskDown(e, instance);
                     break;
 
-                case KeyCode.right:
-                    if (e.ctrlKey) this.moveTaskRight(e, instance);
-                    else this.makeTaskSubtask(e, instance);
-                    break;
+                // case KeyCode.right:
+                //     if (e.ctrlKey) this.moveTaskRight(e, instance);
+                //     else this.makeTaskSubtask(e, instance);
+                //     break;
 
                 case KeyCode.left:
                     if (e.ctrlKey) this.moveTaskLeft(e, instance);
