@@ -98,6 +98,7 @@ export default ({ref, get, set}) => {
         }
         if(element.id===taskId){
             finalUpperId = foundedMainTaskToAdd;
+            return finalUpperId;
         }
     });
     return finalUpperId;
@@ -302,22 +303,16 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.insert:
                 case code("O"):
-                    let nt = prepareTask(t.listId);
-                    let order = getSortedTaskOrderList(t.listId);
-                    let index = order.indexOf($task.order);
-
-                    //TODO: Fix insertion point
-                    let below =
-                        index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
-                    nt.order = below
-                        ? getNextOrder($task.order, order)
-                        : getPrevOrder($task.order, order);
+                    let nt = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
 
                     set("activeTaskId", nt.id);
                     updateTask(nt);
                     break;
 
-                case KeyCode.right:
+                case KeyCode.alt:
+                    let st = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+
+                    set("activeTaskId", st.id);
                     this.addSubtaskTask(e, instance);
                     break;
 
@@ -329,13 +324,16 @@ export default ({ref, get, set}) => {
                     if (e.ctrlKey) this.moveTaskDown(e, instance);
                     break;
 
-                // case KeyCode.right:
-                //     if (e.ctrlKey) this.moveTaskRight(e, instance);
-                //     else this.makeTaskSubtask(e, instance);
-                //     break;
+                case KeyCode.right:
+                    if (e.ctrlKey) this.moveTaskRight(e, instance);
+                    else if (e.shiftKey) this.makeTaskSubtask(e, instance);
+                    // this.addSubtaskTask(e, instance);
+                    // else if (e.keyCode(18)) 
+                    break;
 
                 case KeyCode.left:
                     if (e.ctrlKey) this.moveTaskLeft(e, instance);
+                    else if (e.shiftKey) this.makeTaskMainTask(e, instance);
                     break;
             }
         },
@@ -446,6 +444,18 @@ export default ({ref, get, set}) => {
                 });
         }
     }
+}
+
+function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+    let nt = prepareTask(t.listId);
+    let order = getSortedTaskOrderList(t.listId);
+    let index = order.indexOf($task.order);
+    //TODO: Fix insertion point
+    let below = index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
+    nt.order = below
+        ? getNextOrder($task.order, order)
+        : getPrevOrder($task.order, order);
+    return nt;
 }
 
 function getPrevOrder(currentOrder, orderList) {
