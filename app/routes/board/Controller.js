@@ -4,7 +4,6 @@ import {KeyCode, closest} from "cx/util";
 
 import uid from "uid";
 import {firestore} from "../../data/db/firestore";
-
 const mergeFirestoreSnapshot = (prevList, snapshot, name) => {
     //TODO: Impement a more efficient data merge strategy
     let result = [];
@@ -62,20 +61,55 @@ export default ({ref, get, set}) => {
             .update(list);
     }
 
-    const prepareTask = (listId) => {
+    // increease order and generate new task id
+    // @partnerId is used to indicate subtask parent
+    const prepareTask = (listId, parentId=0) => {
         let order = getSortedTaskOrderList(listId);
         let maxOrder = order[order.length - 1] || 0;
+        let id = uid();
+        set("newTaskId", id);
         return {
-            id: uid(),
+            id,
             listId,
             createdDate: new Date().toISOString(),
             order: maxOrder + 1,
-            isNew: true
+            parentId: parentId,
         };
+
+    };
+
+    const getNotDeletedUpperTaskId = (list) => {
+        var foundedMainTaskToAdd=0;
+        list.forEach(element => {
+            console.log(element)
+            if(element.deleted!=false){
+                foundedMainTaskToAdd = element.id;
+            }
+        });
+        return foundedMainTaskToAdd;
+    };
+
+    const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
+        var foundedMainTaskToAdd = 0;
+        var finalUpperId=-1;
+        list.forEach(element => {
+        if (element.deleted != false) {
+            foundedMainTaskToAdd = element.id;
+        }
+        if(element.id===taskId){
+            finalUpperId = foundedMainTaskToAdd;
+        }
+    });
+    return finalUpperId;
     };
 
     const getSortedTaskOrderList = (listId) => {
         return getOrderList(tasks.get(), t => t.listId == listId);
+    };
+
+    const makeTaskSubtask = (list,taskId) => {
+        var upperId = getNotDeletedUpperTaskIdForList(list.taskId);
+        return upperId;
     };
 
     const moveTaskToList = (taskId, listId) => {
@@ -169,6 +203,30 @@ export default ({ref, get, set}) => {
                 .set(task);
         },
 
+        addSubtaskTask(e, {store}) {
+            e.preventDefault();
+            let listId = store.get("$list.id");
+            //only if exist first element on list
+            if (tasks.get()!=null) {
+                // console.log(getNotDeletedUpperTaskId(tasks.get()));
+                let task = prepareTask(listId);
+                tasks.append(task);
+                boardDoc
+                .collection("tasks")
+                .doc(task.id)
+                .set(task);
+            }
+        },
+
+        makeTaskSubtask(e, {store}) {
+            e.stopPropagation();
+            e.preventDefault();
+            let {$task} = store.getData();
+            let aboveId=getNotDeletedUpperTaskIdForList(
+                tasks.get(),$task.id);
+            updateTask({ ...$task, parentId: aboveId });
+        },
+
         moveTaskUp(e, {store}) {
             e.stopPropagation();
             e.preventDefault();
@@ -260,6 +318,11 @@ export default ({ref, get, set}) => {
                     updateTask(nt);
                     break;
 
+                // case KeyCode.right:
+                    // this.addSubtaskTask(e, instance);
+                // if (e.ctrlKey)
+                    // break;
+
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
                     break;
@@ -270,6 +333,7 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.right:
                     if (e.ctrlKey) this.moveTaskRight(e, instance);
+                    else this.makeTaskSubtask(e, instance);
                     break;
 
                 case KeyCode.left:

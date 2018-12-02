@@ -9,3 +9,7 @@ node_modules
 *.db
 *.pem
 packages
+.vscode/vscode-kanban.json
+.vscode-upload.json
+yarn.lock
+todo.todo

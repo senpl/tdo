@@ -9,9 +9,10 @@ import BoardEditor from './BoardEditor';
 
 let searchTerms = null;
 let searchQuery = null;
-
+let mainTaskId = 0;
 
 function filterItems(item, {search, list, settings}) {
+    mainTaskId=item.id;
     if (item.deleted || item.listId != list.id)
         return false;
 
@@ -49,100 +50,134 @@ const editTaskboard = (e, {store}) => {
     store.toggle('$list.edit')
 };
 
-export default <cx>
-    <div class="cxb-taskboard" controller={Controller} layout={FirstVisibleChildLayout}>
-        <div class="cxe-taskboard-loading" visible:expr="{$page.status}=='loading'">
-            Loading...
-        </div>
-        <div class="cxe-taskboard-error" visible:expr="{$page.status}=='error'">
-            Error occurred while fetching data from GitHub. <Button onClick="load">Retry</Button>
-        </div>
-        <Repeater
-            records:bind="boards"
-            recordName="$board"
-            keyField="id"
-            filter={filterBoards}
-            filterParams:bind="$route.boardId"
-        >
-            <div
-                class:tpl="cxe-taskboard-lists {$board.className}"
-                style:bind="$board.style"
-            >
-                <Repeater
-                    records:bind="$page.lists"
-                    recordName="$list"
-                    keyField="id"
-                    sortField="order"
-                    sortDirection="ASC"
-                >
-                    <div
-                        class:tpl="cxb-tasklist {$list.className}"
-                        style:bind="$list.listStyle">
-                        <header class="cxe-tasklist-header">
-                            <h2
-                                class:tpl="{$list.headerClass}"
-                                text:bind="$list.name"
-                                style:bind="$list.headerStyle"
-                                onDoubleClick={editTaskboard}
-                            />
-                            <a href="#"
-                               tabIndex={-1}
-                               onClick={editTaskboard}
-                            >
-                                &#x270e;
-                            </a>
-                        </header>
-                        <ListEditor visible:expr="!!{$list.edit}"/>
-                        <Menu class="cxe-tasklist-items" onKeyDown="onTaskListKeyDown" itemPadding="small">
-                            <Repeater
-                                records:bind="$page.tasks"
-                                recordName="$task"
-                                keyField="id"
-                                sortField="order"
-                                sortDirection="ASC"
-                                filter={filterItems}
-                                filterParams={{
-                                    list: {bind: '$list'},
-                                    search: {bind: 'search'},
-                                    settings: {bind: 'settings'}
-                                }}
-                            >
-                                <MenuItem pad={false}>
-                                    <Task
-                                        bind="$task"
-                                        styles:bind="settings.taskStyles"
-                                        autoFocus:expr="{activeTaskId}=={$task.id}"
-                                        onKeyDown="onTaskKeyDown"
-                                        onSave="onSaveTask"
-                                    />
-                                </MenuItem>
-                            </Repeater>
-                            <a class="cxe-tasklist-add" onClick="addTask" href="#">Add Task</a>
-                        </Menu>
-                    </div>
-                </Repeater>
-                <div class="cxb-tasklist">
-                    <Menu class="cxe-tasklist-items" onKeyDown="onTaskListKeyDown" itemPadding="small">
-                        <a class="cxe-tasklist-add"
-                           onClick="addList"
-                           href="#"
-                        >
-                            Add List
-                        </a>
+const styleSubtaskWhenNeeded = (item)=>
+{
+  let styleTask = "";
+  let { $task } = item;
+  console.log($task.parentId);
+  if ($task.parentId != 0)
+  styleTask=subtaskStyle;
+  return styleTask;
+};
 
-                        <a class="cxe-tasklist-add"
-                           onClick={(e, {store}) => {
-                               e.preventDefault();
-                               store.set('$board.edit', true)
-                           }}
-                           href="#"
-                        >
-                            Edit Board
-                        </a>
-                    </Menu>
-                    <BoardEditor visible:expr="!!{$board.edit}"/>
-                </div>
+const subtaskStyle = {
+  "margin-left": "10px",
+  border: "5px solid pink"
+};
+
+export default (
+  <cx>
+    <div
+      class="cxb-taskboard"
+      controller={Controller}
+      layout={FirstVisibleChildLayout}
+    >
+      <div
+        class="cxe-taskboard-loading"
+        visible:expr="{$page.status}=='loading'"
+      >
+        Loading...
+      </div>
+      <div class="cxe-taskboard-error" visible:expr="{$page.status}=='error'">
+        Error occurred while fetching data from GitHub.{" "}
+        <Button onClick="load">Retry</Button>
+      </div>
+      <Repeater
+        records:bind="boards"
+        recordName="$board"
+        keyField="id"
+        filter={filterBoards}
+        filterParams:bind="$route.boardId"
+      >
+        <div
+          class:tpl="cxe-taskboard-lists {$board.className}"
+          style:bind="$board.style"
+        >
+          <Repeater
+            records:bind="$page.lists"
+            recordName="$list"
+            keyField="id"
+            sortField="order"
+            sortDirection="ASC"
+          >
+            <div
+              class:tpl="cxb-tasklist {$list.className}"
+              style:bind="$list.listStyle"
+            >
+              <header class="cxe-tasklist-header">
+                <h2
+                  class:tpl="{$list.headerClass}"
+                  text:bind="$list.name"
+                  style:bind="$list.headerStyle"
+                  onDoubleClick={editTaskboard}
+                />
+                <a href="#" tabIndex={-1} onClick={editTaskboard}>
+                  &#x270e;
+                </a>
+              </header>
+              <ListEditor visible:expr="!!{$list.edit}" />
+              <Menu
+                class="cxe-tasklist-items"
+                onKeyDown="onTaskListKeyDown"
+                itemPadding="small"
+              >
+                <Repeater
+                  records:bind="$page.tasks"
+                  recordName="$task"
+                  keyField="id"
+                  sortField="order"
+                  sortDirection="ASC"
+                  filter={filterItems}
+                  filterParams={{
+                    list: { bind: "$list" },
+                    search: { bind: "search" },
+                    settings: { bind: "settings" },
+                    pageTasks: {bind: "$page.tasks"}
+                  }}
+                >
+                  <MenuItem style={styleSubtaskWhenNeeded} pad={false}>
+                    <Task
+                      bind="$task"
+                      styleRules:bind="settings.taskStyles"
+                      autoFocus:expr="{activeTaskId}=={$task.id}"
+                      isNew:expr="{newTaskId}=={$task.id}"
+                      onKeyDown="onTaskKeyDown"
+                      onSave="onSaveTask"
+                    />
+                  </MenuItem>
+                </Repeater>
+                <a class="cxe-tasklist-add" onClick="addTask" href="#">
+                  Add Task
+                </a>
+                
+              </Menu>
             </div>
-        </Repeater>
+          </Repeater>
+          <div class="cxb-tasklist">
+            <Menu
+              class="cxe-tasklist-items"
+              onKeyDown="onTaskListKeyDown"
+              itemPadding="small"
+            >
+              <a class="cxe-tasklist-add" onClick="addList" href="#">
+                Add List
+              </a>
+
+              <a
+                class="cxe-tasklist-add"
+                onClick={(e, { store }) => {
+                  e.preventDefault();
+                  store.set("$board.edit", true);
+                }}
+                href="#"
+              >
+                Edit Board
+              </a>
+            </Menu>
+            <BoardEditor visible:expr="!!{$board.edit}" />
+          </div>
+        </div>
+      </Repeater>
     </div>
-</cx>;
+  </cx>
+);
