@@ -2,6 +2,11 @@
     ✔ Niech przekazuje index na nowa pozycje @done (12/2/2018, 1:59:40 PM)
     ✔ funkcja do uzyskiwania indexu @done (12/2/2018, 3:34:58 PM)
     ☐ Niech dodaje na najwyższy, nie na najnizszy możliwy punkt
+        ☐ Poprawić insertion point
+            ✔ Dodać insert direction do opcji @done (12/3/2018, 2:11:55 PM)
+            ☐ Jeśli jest add on $list.taskAddAsFirst to dodajemy na samej górze a reszcie poprawiamy index
+        ☐ Dodać metodę update tasks below
+        ☐ Zobaczyć
 ☐ Niech przenoszenie zadan przenosi tez podzadania
     ☐ Sprawdzić czy insertion in place dziala
     ☐ Niech dodawnie zadan dodają na samą góre
@@ -24,6 +29,58 @@
     ✔ Przycisk do tworzenia subrasku przypisać na strzalke w bok @done (12/2/2018, 10:55:30 AM)
     ✔ niech dziala najprosciej i insert, a potem przenies w bok. @done (12/2/2018, 10:55:33 AM)
     ☐ Dziala dla nowo tworzonych, tak samo zrobić dla przenoszonych w góre/dól
+☐ Simplest subtask
+    ☐ Znaleźć element dodający zadanie
+        Jest wywoływany z app/routes/board/index.js <a class="cxe-tasklist-add" onClick="addTask" href="#">Add Task</a>
+        mam element dodający zadanie, jest w routers/board\Controller -> metoda AddTask wywołje pobranie listId i dodanie do tasks taska
+        ten utworzony task zostaje dodany do listy
+        ☐ opcja dodawania zadania jako podzadanie
+            ☐ Niech po wywołaniu akcji dodaje się addSubtask
+            ☐ a subtask dostaje albo -1 albo z zadania nad nim
+        ☐ posprzątać kod do subtasków
+            ☐ zwłaszcza tam gdzie dodawałem subtask
+            ☐ Przypisać nie używany przycisk
+            ☐ opcja wskazywania main task przy podnoszeniu subtask'ów
+        ☐ jest w app/routes/board/Controller.js addTask linia 164
+            dodać do dodawanego taska parentId i tak, niech lista się wypisuje 
+                tasks.append dodaje zadanie
+                ☐ niech wyświetla te z parentId 0 ,
+                ✔ wyświetl subtask jako subtask @done (11/29/2018, 10:11:07 AM)
+                    ☐ wyświetl tylko jak id się zgadza nad nim
+                ☐ niech wyświetla te z parentId jeśli mają odpowiednie id
+                    ✔ Niech przycisk zmienia zadanie w podzadanie @done (11/28/2018, 4:52:13 PM)
+                        ☐ Wprowadzając id do tego nad nim jako parentId
+                            ☐ Czyli na przycisk update zadania, i staje się ono podzadaniem
+                                ✔ Wywołać akcje po naciśnięciu na przycisku klawiszu @done (11/28/2018, 4:45:00 PM)
+                                ✔ niech akcja doda parent id @done (11/28/2018, 4:44:54 PM)
+                                    ✔ zdobyc id elementu nad @done (11/28/2018, 4:42:14 PM)
+                                        ✔ Niech leci jak wpisana funkcja @done (11/28/2018, 4:42:10 PM)
+                                    ✔ wpisać to id jako parentId @done (11/28/2018, 4:45:08 PM)
+                            
+                            ☐ potem ewentualnie powrotna zmiana
+                    ☐ Zrobić dodawanie subtask'a 
+                        Zacząć od działającego
+                    ☐ a potem niech wyświetla dla każdego węzła który ma parent id poniżej jego rodzica
+                        
+                        ☐ niech tu działa filtr dla tego taska podtaski
+                            ✔ nie zbieram poprawnie id main taska, zdobyć je. @done (11/28/2018, 2:06:38 PM)
+                            ✔ stworzyć porawne dane @done (11/28/2018, 2:13:54 PM)
+                            ✔ addSubtask nie wprowadza poprawnego klucza, poprawić @done (11/28/2018, 2:14:05 PM)
+                            
+                       ✔ niech ma jakiś prosty styl @done (11/28/2018, 10:53:19 AM)
+                    ☐ niech też odpowiednio modyfikuje order
+                    ✔ Niech doda podzadanie do najwżej znajdującego się zadania, czyli niech doda mu parentId z najwyzszego węzła @done (11/27/2018, 4:05:59 PM)
+                ☐ case KeyCode.insert: tu dodać swój subtask keyboard na początek
+                ☐ Wygląda, że działa dodawnie tylko na dół listy w tej chwili
+       ☐ tasks should have parent Id
+       ☐ Znaleźć gdzie jest wyświetlany obecnie task
+       ☐ Check how it is currently presented
+    ☐ tasks should be presented below their parent
+       ☐ Could we make it looks good on same list
+    ☐ Task could be promoted to be main tasks with keyboard navigation
+    ☐ Marking tasks as done should mark all subtasks as completed?
+
+
 
 ☐ Zawijanie i rozwijanie podzadan
     ☐ Niech ukrywa te poniżej

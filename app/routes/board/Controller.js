@@ -63,19 +63,12 @@ export default ({ref, get, set}) => {
 
     // increease order and generate new task id
     // @partnerId is used to indicate subtask parent
-    const prepareTask = (listId, parentId=0) => {
-        let order = getSortedTaskOrderList(listId);
-        let maxOrder = order[order.length - 1] || 0;
-        let id = uid();
-        set("newTaskId", id);
-        return {
-            id,
-            listId,
-            createdDate: new Date().toISOString(),
-            order: maxOrder + 1,
-            parentId: parentId,
-        };
-
+    const prepareTask = (listId, parentId = 0, taskAddAsFirst = false) => {
+      let order = getSortedTaskOrderList(listId);
+      let maxOrder = order[order.length - 1] || 0;
+      let id = uid();
+      set("newTaskId", id);
+      return { id, listId, createdDate: new Date().toISOString(), order: maxOrder + 1, parentId: parentId };
     };
 
     // const getNotDeletedUpperTaskId = (list) => {
