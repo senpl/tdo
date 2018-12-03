@@ -78,16 +78,16 @@ export default ({ref, get, set}) => {
 
     };
 
-    const getNotDeletedUpperTaskId = (list) => {
-        var foundedMainTaskToAdd=0;
-        list.forEach(element => {
-            console.log(element)
-            if(element.deleted!=false){
-                foundedMainTaskToAdd = element.id;
-            }
-        });
-        return foundedMainTaskToAdd;
-    };
+    // const getNotDeletedUpperTaskId = (list) => {
+    //     var foundedMainTaskToAdd=0;
+    //     list.forEach(element => {
+    //         console.log(element)
+    //         if(element.deleted!=false){
+    //             foundedMainTaskToAdd = element.id;
+    //         }
+    //     });
+    //     return foundedMainTaskToAdd;
+    // };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
         var foundedMainTaskToAdd = 0;
@@ -98,6 +98,7 @@ export default ({ref, get, set}) => {
         }
         if(element.id===taskId){
             finalUpperId = foundedMainTaskToAdd;
+            return finalUpperId;
         }
     });
     return finalUpperId;
@@ -204,18 +205,17 @@ export default ({ref, get, set}) => {
         },
 
         addSubtaskTask(e, {store}) {
-            e.preventDefault();
-            let listId = store.get("$list.id");
-            //only if exist first element on list
-            if (tasks.get()!=null) {
-                // console.log(getNotDeletedUpperTaskId(tasks.get()));
-                let task = prepareTask(listId);
+                e.preventDefault();
+                let {$task} = store.getData();
+                let aboveId=getNotDeletedUpperTaskIdForList(
+                    tasks.get(),$task.id);
+                let listId = store.get("$list.id");
+                let task = prepareTask(listId,aboveId);    
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
                 .doc(task.id)
                 .set(task);
-            }
         },
 
         makeTaskSubtask(e, {store}) {
@@ -303,24 +303,18 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.insert:
                 case code("O"):
-                    let nt = prepareTask(t.listId);
-                    let order = getSortedTaskOrderList(t.listId);
-                    let index = order.indexOf($task.order);
-
-                    //TODO: Fix insertion point
-                    let below =
-                        index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
-                    nt.order = below
-                        ? getNextOrder($task.order, order)
-                        : getPrevOrder($task.order, order);
+                    let nt = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
 
                     set("activeTaskId", nt.id);
                     updateTask(nt);
                     break;
 
-                // case code("O"):
-                //     this.addSubtaskTask(e, instance);
-                //     break;
+                case KeyCode.alt:
+                    let st = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+
+                    set("activeTaskId", st.id);
+                    this.addSubtaskTask(e, instance);
+                    break;
 
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
@@ -332,10 +326,14 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.right:
                     if (e.ctrlKey) this.moveTaskRight(e, instance);
+                    else if (e.shiftKey) this.makeTaskSubtask(e, instance);
+                    // this.addSubtaskTask(e, instance);
+                    // else if (e.keyCode(18)) 
                     break;
 
                 case KeyCode.left:
                     if (e.ctrlKey) this.moveTaskLeft(e, instance);
+                    else if (e.shiftKey) this.makeTaskMainTask(e, instance);
                     break;
             }
         },
@@ -446,6 +444,18 @@ export default ({ref, get, set}) => {
                 });
         }
     }
+}
+
+function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+    let nt = prepareTask(t.listId);
+    let order = getSortedTaskOrderList(t.listId);
+    let index = order.indexOf($task.order);
+    //TODO: Fix insertion point
+    let below = index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
+    nt.order = below
+        ? getNextOrder($task.order, order)
+        : getPrevOrder($task.order, order);
+    return nt;
 }
 
 function getPrevOrder(currentOrder, orderList) {

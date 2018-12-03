@@ -1,0 +1,30 @@
+☐ Add subtask make working
+    ✔ Niech przekazuje index na nowa pozycje @done (12/2/2018, 1:59:40 PM)
+    ✔ funkcja do uzyskiwania indexu @done (12/2/2018, 3:34:58 PM)
+    ☐ Niech dodaje na najwyższy, nie na najnizszy możliwy punkt
+☐ Niech przenoszenie zadan przenosi tez podzadania
+    ☐ Sprawdzić czy insertion in place dziala
+    ☐ Niech dodawnie zadan dodają na samą góre
+        ☐ Wygląda, że znajduje najniższy, a powinien najwyższy wolny id
+        ☐ spróbować zabrać order id
+    ☐ Przemyśleć finalnie klawisze do przenoszenia zadan
+        ☐ s niech bedzie klawiszem do tworzenia podzadan
+        ☐ Niech strzalka w bok i shift TWORZA PODZADANIE
+        ☐ shift+strzalki niech przenoszą podzadania
+        ☐ Dodac opis do pomocy
+    ☐ niech zacznie działać po przenoszeniu przypiswanie upperId
+        ☐ dla akcji w dól
+        ☐ dla akcji w góre
+    ☐ niech po przeniesieniu danego id przeniesie na nową pozycje wszyskie jego podid
+        ☐ Czyli wywouje sie zmiana polozenia
+            ☐ Po niej mamy pozition id
+                ☐ To pozition id wykożytać do przenosin dalszych
+                ☐ Wszystkie podzadania przenieść
+        
+    ✔ Przycisk do tworzenia subrasku przypisać na strzalke w bok @done (12/2/2018, 10:55:30 AM)
+    ✔ niech dziala najprosciej i insert, a potem przenies w bok. @done (12/2/2018, 10:55:33 AM)
+    ☐ Dziala dla nowo tworzonych, tak samo zrobić dla przenoszonych w góre/dól
+
+☐ Zawijanie i rozwijanie podzadan
+    ☐ Niech ukrywa te poniżej
+        
