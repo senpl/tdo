@@ -63,24 +63,36 @@ export default ({ref, get, set}) => {
 
     // increease order and generate new task id
     // @partnerId is used to indicate subtask parent
+    // @taskAddAsFirst if task should be first or last on added list
     const prepareTask = (listId, parentId = 0, taskAddAsFirst = false) => {
-      let order = getSortedTaskOrderList(listId);
-      let maxOrder = order[order.length - 1] || 0;
+      let order, maxOrder, orderToSet;
+            console.log("taskAddAsFirst");
+      console.log(taskAddAsFirst);
+      if(taskAddAsFirst){
+        //update all id below
+        // updateOrderBelowTask(listId, orderToStart, taskAddAsFirst);
+        orderToSet=1;
+      } else {
+        order = getSortedTaskOrderList(listId);
+        maxOrder = order[order.length - 1] || 0;
+        orderToSet=maxOrder + 1;
+      }
+   
       let id = uid();
       set("newTaskId", id);
-      return { id, listId, createdDate: new Date().toISOString(), order: maxOrder + 1, parentId: parentId };
+      return { id, listId, createdDate: new Date().toISOString(), order: orderToSet, parentId: parentId };
     };
 
-    // const getNotDeletedUpperTaskId = (list) => {
-    //     var foundedMainTaskToAdd=0;
-    //     list.forEach(element => {
-    //         console.log(element)
-    //         if(element.deleted!=false){
-    //             foundedMainTaskToAdd = element.id;
-    //         }
-    //     });
-    //     return foundedMainTaskToAdd;
-    // };
+    const updateOrderBelowTask = (listId, orderToStart, taskAddAsFirst) => {
+      let tasksToUpdate=getOrderList(tasks.get(), t => t.listId == listId);
+      console.log("listOfTasks")
+      console.log(tasksToUpdate);
+      let result = updateTasksBelow(tasksToUpdate, orderToStart, taskAddAsFirst);
+      // tasksToUpdate.forEach(task => {task=});
+      return null;
+     };
+
+
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
         var foundedMainTaskToAdd = 0;
@@ -97,7 +109,7 @@ export default ({ref, get, set}) => {
     return finalUpperId;
     };
 
-    const getSortedTaskOrderList = (listId) => {
+    const getSortedTaskOrderList = listId => {
         return getOrderList(tasks.get(), t => t.listId == listId);
     };
 
@@ -203,7 +215,8 @@ export default ({ref, get, set}) => {
                 let aboveId=getNotDeletedUpperTaskIdForList(
                     tasks.get(),$task.id);
                 let listId = store.get("$list.id");
-                let task = prepareTask(listId,aboveId);    
+                let orderToInsert = store.get("$list.taskAddAsFirst");
+                let task = prepareTask(listId, aboveId, orderToInsert);    
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
