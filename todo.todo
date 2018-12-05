@@ -1,20 +1,16 @@
 
 ☐ Niech mogę oglądać zadania na telefonie
     ☐ niech mogę zmieniać ich kolejność
+
+☐ Działa tylko z samej góry
+    ☐ I na tą chwilę to wystarczające jest
+
+
+☐ Niech insertion działa też dla zwykłych zadań
+    ☐ Zmienić parametr i odwołania do niego
+    ☐ sprawdzić, czy działa to dla samych zadań jak powinno
 ☐ Sprawdzić, jak testy się włączają w cxjs
 
-☐ Add subtask make working
-    ✔ Niech przekazuje index na nowa pozycje @done (12/2/2018, 1:59:40 PM)
-    ✔ funkcja do uzyskiwania indexu @done (12/2/2018, 3:34:58 PM)
-    ✔ Niech dodaje na najwyższy, nie na najnizszy możliwy punkt @done (12/4/2018, 11:30:41 AM)
-        ✔ Poprawić insertion point @done (12/4/2018, 11:29:52 AM)
-            ✔ Dodać insert direction do opcji @done (12/3/2018, 2:11:55 PM)
-            ✔ Jeśli jest add on $list.taskAddAsFirst to dodajemy na samej górze a reszcie poprawiamy index @done (12/5/2018, 8:51:38 AM)
-                ✔ Zrobić testy do tej funkcji updateującej wszystko poniżej @done (12/5/2018, 6:40:16 AM)
-                    ✔ Niech funkcja ma na wejściu tablicę z elemenentem i wstawi element nad @done (12/5/2018, 6:40:11 AM)
-        ✔ Dodać metodę update tasks below @done (12/5/2018, 6:40:21 AM)
-        ✔ Zobaczyć @done (12/4/2018, 11:46:50 AM)
-        
 ☐ Niech przenoszenie zadania przenosi też jego podzadania
 ☐ Niech przenoszenie zadan przenosi tez podzadania
     ✔ Sprawdzić czy insertion in place dziala @done (12/5/2018, 6:41:08 AM)

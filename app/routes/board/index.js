@@ -54,7 +54,6 @@ const styleSubtaskWhenNeeded = (item)=>
 {
   let styleTask = "";
   let { $task } = item;
-  console.log($task.parentId);
   if ($task.parentId != 0)
   styleTask=subtaskStyle;
   return styleTask;

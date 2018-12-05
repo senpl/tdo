@@ -65,42 +65,55 @@ export default ({ref, get, set}) => {
     // @partnerId is used to indicate subtask parent
     // @taskAddAsFirst if task should be first or last on added list
     // @insertPosition position to insert
-    const prepareTask = (listId, parentId = 0, taskAddAsFirst = false, insertPosition = 2) => {
+    const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsFirst = false) => {
       let order, maxOrder, orderToSet;
-      console.log("taskAddAsFirst");
-      console.log(taskAddAsFirst);
       if (taskAddAsFirst) {
-        //update all id below
-        updateOrderBelowTask(listId, insertPosition, taskAddAsFirst);
+        //update all order below
+        // updateOrderBelowTask(listId, insertPosition, taskAddAsFirst);
         orderToSet = insertPosition+1;
-      } else {
+        console.log("orderToSetprepareTask");
+        console.log(orderToSet);
+    } else {
         order = getSortedTaskOrderList(listId);
         maxOrder = order[order.length - 1] || 0;
         orderToSet = maxOrder + 1;
-      }
-
-      let id = uid();
-      set("newTaskId", id);
-      return { id, listId, createdDate: new Date().toISOString(), order: orderToSet, parentId: parentId };
+    }
+        // console.log("orderToSet");
+        // console.log(orderToSet);
+        let id = uid();
+        set("newTaskId", id);
+        return { id, listId, createdDate: new Date().toISOString(), order: orderToSet, parentId: parentId };
     };
 
     const updateOrderBelowTask = (listId, orderToStart, taskAddFromUp) => {
         let tasksToUpdate = getSortedTasks(listId);
-        let tasksWithNewOrder;
-        if(taskAddFromUp){
-            let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
+        let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
             tasksWithNewOrder.forEach(task => updateTask(task));
-        }
         return tasksWithNewOrder;
     };
 
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-        let modifiedTasks=tasksToUpdate;
+        let modifiedTasks=[];
         for (let index = orderToStart; index < modifiedTasks.length; index++) {
             const task = modifiedTasks[index];
             task.order=task.order+1;
         }
         return modifiedTasks;
+    };
+
+    const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
+      var foundedMainTaskOrder = 0;
+      var finalOrder = 0;
+      list.forEach(element => {
+        if (element.deleted != false) {
+          foundedMainTaskOrder = element.order;
+        }
+        if (element.id === taskId) {
+          finalOrder = foundedMainTaskOrder;
+          return finalOrder-1;
+        }
+      });
+      return finalOrder;
     };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
@@ -227,9 +240,14 @@ export default ({ref, get, set}) => {
                 let {$task} = store.getData();
                 let aboveId=getNotDeletedUpperTaskIdForList(
                     tasks.get(),$task.id);
+                let aboveOrder = getNotDeletedUpperOrderIdForList(tasks.get(), $task.id);
                 let listId = store.get("$list.id");
                 let orderToInsert = store.get("$list.taskAddAsFirst");
-                let task = prepareTask(listId, aboveId, orderToInsert, $task.order);    
+                // $task.order
+                var orderThatWorks = aboveOrder;
+                console.log("orderThatWorks");
+                console.log(orderThatWorks);
+                let task = prepareTask(listId, orderThatWorks, aboveId, orderToInsert);    
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
@@ -329,8 +347,9 @@ export default ({ref, get, set}) => {
                     break;
 
                 case KeyCode.alt:
-                    let st = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
-
+                    let st = prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+// console.log("st.order");
+// console.log(st.order);
                     set("activeTaskId", st.id);
                     this.addSubtaskTask(e, instance);
                     break;
@@ -474,6 +493,11 @@ function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, co
     nt.order = below
         ? getNextOrder($task.order, order)
         : getPrevOrder($task.order, order);
+    return nt;
+}
+
+function prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+    let nt = prepareTask(t.listId, 1, t.parentId, true);
     return nt;
 }
 
