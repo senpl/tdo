@@ -85,20 +85,16 @@ export default ({ref, get, set}) => {
     };
 
     const updateOrderBelowTask = (listId, orderToStart, taskAddFromUp) => {
-      let tasksToUpdate = getSortedTasks(listId);
-    //   console.log("listOfTasks")
-    //   console.log(tasksToUpdate);
-    let tasksWithNewOrder;
-      if(taskAddFromUp){
-      let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
-      tasksWithNewOrder.forEach(task => updateTask(task));
-      }
-      return tasksWithNewOrder;
-     };
+        let tasksToUpdate = getSortedTasks(listId);
+        let tasksWithNewOrder;
+        if(taskAddFromUp){
+            let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
+            tasksWithNewOrder.forEach(task => updateTask(task));
+        }
+        return tasksWithNewOrder;
+    };
 
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-        // console.log("tasksToUpdate")
-        // console.log(tasksToUpdate);
         let modifiedTasks=tasksToUpdate;
         for (let index = orderToStart; index < modifiedTasks.length; index++) {
             const task = modifiedTasks[index];
@@ -123,14 +119,12 @@ export default ({ref, get, set}) => {
     };
 
     const getSortedTasks = listId => {
-      return getTaskList(tasks.get(), t => t.listId == listId);
+        return getTaskList(tasks.get(), t => t.listId == listId);
     };
 
     const getSortedTaskOrderList = listId => {
         return getOrderList(tasks.get(), t => t.listId == listId);
     };
-
- 
 
     const makeTaskSubtask = (list,taskId) => {
         var upperId = getNotDeletedUpperTaskIdForList(list.taskId);
