@@ -1,21 +1,30 @@
+
+☐ Niech mogę oglądać zadania na telefonie
+    ☐ niech mogę zmieniać ich kolejność
+☐ Sprawdzić, jak testy się włączają w cxjs
+
 ☐ Add subtask make working
     ✔ Niech przekazuje index na nowa pozycje @done (12/2/2018, 1:59:40 PM)
     ✔ funkcja do uzyskiwania indexu @done (12/2/2018, 3:34:58 PM)
-    ☐ Niech dodaje na najwyższy, nie na najnizszy możliwy punkt
-        ☐ Poprawić insertion point
+    ✔ Niech dodaje na najwyższy, nie na najnizszy możliwy punkt @done (12/4/2018, 11:30:41 AM)
+        ✔ Poprawić insertion point @done (12/4/2018, 11:29:52 AM)
             ✔ Dodać insert direction do opcji @done (12/3/2018, 2:11:55 PM)
-            ☐ Jeśli jest add on $list.taskAddAsFirst to dodajemy na samej górze a reszcie poprawiamy index
-        ☐ Dodać metodę update tasks below
-        ☐ Zobaczyć
+            ✔ Jeśli jest add on $list.taskAddAsFirst to dodajemy na samej górze a reszcie poprawiamy index @done (12/5/2018, 8:51:38 AM)
+                ✔ Zrobić testy do tej funkcji updateującej wszystko poniżej @done (12/5/2018, 6:40:16 AM)
+                    ✔ Niech funkcja ma na wejściu tablicę z elemenentem i wstawi element nad @done (12/5/2018, 6:40:11 AM)
+        ✔ Dodać metodę update tasks below @done (12/5/2018, 6:40:21 AM)
+        ✔ Zobaczyć @done (12/4/2018, 11:46:50 AM)
+        
+☐ Niech przenoszenie zadania przenosi też jego podzadania
 ☐ Niech przenoszenie zadan przenosi tez podzadania
-    ☐ Sprawdzić czy insertion in place dziala
-    ☐ Niech dodawnie zadan dodają na samą góre
-        ☐ Wygląda, że znajduje najniższy, a powinien najwyższy wolny id
-        ☐ spróbować zabrać order id
+    ✔ Sprawdzić czy insertion in place dziala @done (12/5/2018, 6:41:08 AM)
+    ✔ Niech dodawnie zadan dodają na samą góre @done (12/5/2018, 6:41:53 AM)
+        ✔ Wygląda, że znajduje najniższy, a powinien najwyższy wolny id @done (12/5/2018, 6:41:32 AM)
+        ✔ spróbować zabrać order id @done (12/5/2018, 6:41:58 AM)
     ☐ Przemyśleć finalnie klawisze do przenoszenia zadan
         ☐ s niech bedzie klawiszem do tworzenia podzadan
         ☐ Niech strzalka w bok i shift TWORZA PODZADANIE
-        ☐ shift+strzalki niech przenoszą podzadania
+        ✔ shift+strzalki niech przenoszą podzadania @done (12/5/2018, 6:22:57 AM)
         ☐ Dodac opis do pomocy
     ☐ niech zacznie działać po przenoszeniu przypiswanie upperId
         ☐ dla akcji w dól
@@ -26,9 +35,26 @@
                 ☐ To pozition id wykożytać do przenosin dalszych
                 ☐ Wszystkie podzadania przenieść
         
+☐ Dodać opcję next action ukrywająca wszystko poza obecnie robionym podzadaniem i jego podzadaniami
+
+☐ Naprawić insertion point przez update task below order
+
+
     ✔ Przycisk do tworzenia subrasku przypisać na strzalke w bok @done (12/2/2018, 10:55:30 AM)
     ✔ niech dziala najprosciej i insert, a potem przenies w bok. @done (12/2/2018, 10:55:33 AM)
     ☐ Dziala dla nowo tworzonych, tak samo zrobić dla przenoszonych w góre/dól
+        ☐ Przenoszenie w górę
+            ☐ Nich przenosząc w górę szuka, orderu 1 miejsca wyżej nad nim
+                ☐ jeśli to parent id to przenosi o 2 miejsca i uaktualnia parentId
+                ☐ Przypisuje porentId z elementu który jest nad nim(o ile istnieje)
+                ☐ Uaktualnia pozycje innych zadań
+                ☐ Uaktualnia order zmienianego zadania
+        ☐ Przenoszenie zadania w dół
+            ☐ Nich przenosząc w dół szuka, orderu 1 miejsca niżej pod nim
+                ☐ jeśli to inny parent id to przenosi o 2 miejsca i uaktualnia parentId na tego nowego
+                ☐ Przypisuje porentId z elementu który jest nad nim(o ile istnieje)
+                ☐ Uaktualnia pozycje innych zadań między naszymi
+                ☐ Uaktualnia order zmienianego zadania
 ☐ Simplest subtask
     ☐ Znaleźć element dodający zadanie
         Jest wywoływany z app/routes/board/index.js <a class="cxe-tasklist-add" onClick="addTask" href="#">Add Task</a>
@@ -80,8 +106,7 @@
     ☐ Task could be promoted to be main tasks with keyboard navigation
     ☐ Marking tasks as done should mark all subtasks as completed?
 
-
-
 ☐ Zawijanie i rozwijanie podzadan
     ☐ Niech ukrywa te poniżej
-        
+☐ ustawić sobie chrome debugger ???
+✘ nie zbiera id z list wszystkich, dlatego to działa, powinno zbierać z konkretnie tej listy. @cancelled (12/4/2018, 11:50:47 AM)
