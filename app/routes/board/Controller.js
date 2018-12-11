@@ -66,10 +66,10 @@ export default ({ref, get, set}) => {
     // @taskAddAsFirst if task should be first or last on added list
     // @insertPosition position to insert
     const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsFirst = false) => {
-      let order, maxOrder, orderToSet;
-      if (taskAddAsFirst) {
+    let order, maxOrder, orderToSet;
+    if (taskAddAsFirst) {
         //update all order below
-        // updateOrderBelowTask(listId, insertPosition, taskAddAsFirst);
+        updateTasksOrderBelow(listId, insertPosition);
         orderToSet = insertPosition+1;
         console.log("orderToSetprepareTask");
         console.log(orderToSet);
@@ -92,11 +92,13 @@ export default ({ref, get, set}) => {
         return tasksWithNewOrder;
     };
 
+    // This seem to not work when run not from subtask. It works from main task
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-        let modifiedTasks=[];
+        let modifiedTasks = tasksToUpdate;
         for (let index = orderToStart; index < modifiedTasks.length; index++) {
             const task = modifiedTasks[index];
             task.order=task.order+1;
+            modifiedTasks[index]=task;
         }
         return modifiedTasks;
     };
