@@ -71,15 +71,11 @@ export default ({ref, get, set}) => {
         //update all order below
         // updateTasksOrderBelow(listId, insertPosition);
         orderToSet = insertPosition+1;
-        // console.log("orderToSetprepareTask");
-        // console.log(orderToSet);
     } else {
         order = getSortedTaskOrderList(listId);
         maxOrder = order[order.length - 1] || 0;
         orderToSet = maxOrder + 1;
     }
-        // console.log("orderToSet");
-        // console.log(orderToSet);
         let id = uid();
         set("newTaskId", id);
         return { id, listId, createdDate: new Date().toISOString(), order: orderToSet, parentId: parentId };
@@ -105,12 +101,10 @@ export default ({ref, get, set}) => {
     };
 
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
-            console.log("List");
-            console.log(list);
             var foundedMainTaskOrder = 0;
             var finalOrder = 0;
             list.forEach(element => {
-              if (element.deleted != false) {
+            if (element.deleted != false && element.id != taskId) {
                 foundedMainTaskOrder = element.order;
               }
               if (element.id === taskId) {
@@ -118,12 +112,8 @@ export default ({ref, get, set}) => {
                 return finalOrder - 1;
               }
             });
-            console.log("orderFinal TaskId");
-            console.log(finalOrder);
-            console.log(taskId);
-
             return finalOrder;
-          };;
+          };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
         var foundedMainTaskToAdd = 0;
