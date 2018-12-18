@@ -70,7 +70,7 @@ export default ({ref, get, set}) => {
     let order, maxOrder, orderToSet;
     if (taskAddAsFirst) {
         //update all order below
-        updateOrderBelowTask(listId, insertPosition);
+        updateOrderBelowTask(listId, insertPosition+1);
         orderToSet = insertPosition+1;
     } else {
         order = getSortedTaskOrderList(listId);
@@ -84,7 +84,7 @@ export default ({ref, get, set}) => {
 
     const updateOrderBelowTask = (listId, orderToStart, taskAddFromUp) => {
         let tasksToUpdate = getSortedTasks(listId);
-        let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
+        let tasksWithNewOrder = updateTasksOrderBelow2(tasksToUpdate, orderToStart);
             tasksWithNewOrder.forEach(task => updateTask(task));
         return tasksWithNewOrder;
     };
@@ -98,6 +98,16 @@ export default ({ref, get, set}) => {
         }
         return modifiedTasks;
     };
+
+    const updateTasksOrderBelow2 = (tasksToUpdate, orderToStart) => {
+         let modifiedTasks = tasksToUpdate;
+         for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
+           const task = modifiedTasks[index];
+           task.order = index + 2;
+           modifiedTasks[index] = task;
+         }
+         return modifiedTasks;
+       };
 
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
             var foundedMainTaskOrder = 0;
