@@ -70,7 +70,7 @@ export default ({ref, get, set}) => {
     let order, maxOrder, orderToSet;
     if (taskAddAsFirst) {
         //update all order below
-        // updateTasksOrderBelow(listId, insertPosition);
+        updateOrderBelowTask(listId, insertPosition);
         orderToSet = insertPosition+1;
     } else {
         order = getSortedTaskOrderList(listId);
@@ -84,18 +84,16 @@ export default ({ref, get, set}) => {
 
     const updateOrderBelowTask = (listId, orderToStart, taskAddFromUp) => {
         let tasksToUpdate = getSortedTasks(listId);
-        // let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
-        //     tasksWithNewOrder.forEach(task => updateTask(task));
+        let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
+            tasksWithNewOrder.forEach(task => updateTask(task));
         return tasksWithNewOrder;
     };
 
-    // This seem to not work when run not from subtask. It works from main task
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
         let modifiedTasks = tasksToUpdate;
         for (let index = orderToStart; index < modifiedTasks.length; index++) {
             const task = modifiedTasks[index];
-            // tutaj jest tekst zamiast order
-            // task.order=task.order+1;
+            task.order=task.order+1;
             modifiedTasks[index]=task;
         }
         return modifiedTasks;
@@ -132,7 +130,8 @@ export default ({ref, get, set}) => {
     };
 
     const getSortedTasks = listId => {
-        return getTaskList(tasks.get(), t => t.listId == listId);
+        var sortedList = _.sortBy(tasks.get(), "order");
+        return getTaskList(sortedList, t => t.listId == listId);
     };
 
     const getSortedTaskOrderList = listId => {
