@@ -1,6 +1,7 @@
 import {FocusManager, batchUpdatesAndNotify} from "cx/ui";
 import {ArrayRef, updateArray} from "cx/data";
 import {KeyCode, closest} from "cx/util";
+var _ = require("lodash");
 
 import uid from "uid";
 import {firestore} from "../../data/db/firestore";
@@ -64,7 +65,7 @@ export default ({ref, get, set}) => {
     // increease order and generate new task id
     // @partnerId is used to indicate subtask parent
     // @taskAddAsFirst if task should be first or last on added list
-    // @insertPosition position to insert
+    // @insertPosition order on which insert
     const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsFirst = false) => {
     let order, maxOrder, orderToSet;
     if (taskAddAsFirst) {
@@ -109,7 +110,7 @@ export default ({ref, get, set}) => {
               }
               if (element.id === taskId) {
                 finalOrder = foundedMainTaskOrder;
-                return finalOrder - 1;
+                return finalOrder + 1;
               }
             });
             return finalOrder;
@@ -226,6 +227,7 @@ export default ({ref, get, set}) => {
         addTask(e, {store}) {
             e.preventDefault();
             let listId = store.get("$list.id");
+            // let orderToInsert = store.get("$list.taskAddAsFirst");
             let task = prepareTask(listId);
             tasks.append(task);
             boardDoc
@@ -237,16 +239,18 @@ export default ({ref, get, set}) => {
         addSubtaskTask(e, {store}) {
                 e.preventDefault();
                 let {$task} = store.getData();
-                let aboveId=getNotDeletedUpperTaskIdForList(
-                    tasks.get(),$task.id);
-                let aboveOrder = getNotDeletedUpperOrderIdForList(tasks.get(), $task.id);
+                let taskList = tasks.get();
+                var sortedList = _.sortBy(taskList, "order");
+                let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
+                // console.log(tasks.get());
+                let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
                 let listId = store.get("$list.id");
                 let orderToInsert = store.get("$list.taskAddAsFirst");
                 // $task.order
-                var orderThatWorks = aboveOrder;
+                // var orderThatWorks = aboveOrder;
                 // console.log("orderThatWorks");
                 // console.log(orderThatWorks);
-                let task = prepareTask(listId, orderThatWorks, aboveId, orderToInsert);    
+                let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert);    
                 tasks.append(task);
                 boardDoc
                 .collection("tasks")
@@ -496,7 +500,7 @@ function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, co
 }
 
 function prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
-    let nt = prepareTask(t.listId, 1, t.parentId, true);
+    let nt = prepareTask(t.listId, t.order, t.parentId, true);
     return nt;
 }
 
