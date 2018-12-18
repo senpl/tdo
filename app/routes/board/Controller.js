@@ -84,22 +84,12 @@ export default ({ref, get, set}) => {
 
     const updateOrderBelowTask = (listId, orderToStart, taskAddFromUp) => {
         let tasksToUpdate = getSortedTasks(listId);
-        let tasksWithNewOrder = updateTasksOrderBelow2(tasksToUpdate, orderToStart);
+        let tasksWithNewOrder = updateTasksOrderBelow(tasksToUpdate, orderToStart);
             tasksWithNewOrder.forEach(task => updateTask(task));
         return tasksWithNewOrder;
     };
 
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-        let modifiedTasks = tasksToUpdate;
-        for (let index = orderToStart; index < modifiedTasks.length; index++) {
-            const task = modifiedTasks[index];
-            task.order=task.order+1;
-            modifiedTasks[index]=task;
-        }
-        return modifiedTasks;
-    };
-
-    const updateTasksOrderBelow2 = (tasksToUpdate, orderToStart) => {
          let modifiedTasks = tasksToUpdate;
          for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
            const task = modifiedTasks[index];
