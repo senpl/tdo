@@ -90,29 +90,29 @@ export default ({ref, get, set}) => {
     };
 
     const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-         let modifiedTasks = tasksToUpdate;
-         for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
-           const task = modifiedTasks[index];
-           task.order = index + 2;
-           modifiedTasks[index] = task;
-         }
-         return modifiedTasks;
-       };
+        let modifiedTasks = tasksToUpdate;
+        for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
+            const task = modifiedTasks[index];
+            task.order = index + 2;
+            modifiedTasks[index] = task;
+        }
+        return modifiedTasks;
+    };
 
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
-            var foundedMainTaskOrder = 0;
-            var finalOrder = 0;
-            list.forEach(element => {
+        var foundedMainTaskOrder = 0;
+        var finalOrder = 0;
+        list.forEach(element => {
             if (element.deleted != false && element.id != taskId) {
                 foundedMainTaskOrder = element.order;
-              }
-              if (element.id === taskId) {
+            }
+            if (element.id === taskId) {
                 finalOrder = foundedMainTaskOrder;
                 return finalOrder + 1;
-              }
-            });
-            return finalOrder;
-          };
+            }
+        });
+        return finalOrder;
+    };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
         var foundedMainTaskToAdd = 0;
@@ -236,22 +236,17 @@ export default ({ref, get, set}) => {
         },
 
         addSubtaskTask(e, {store}) {
-                e.preventDefault();
-                let {$task} = store.getData();
-                let taskList = tasks.get();
-                var sortedList = _.sortBy(taskList, "order");
-                let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
-                // console.log(tasks.get());
-                let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
-                let listId = store.get("$list.id");
-                let orderToInsert = store.get("$list.taskAddAsFirst");
-                // $task.order
-                // var orderThatWorks = aboveOrder;
-                // console.log("orderThatWorks");
-                // console.log(orderThatWorks);
-                let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert);    
-                tasks.append(task);
-                boardDoc
+            e.preventDefault();
+            let {$task} = store.getData();
+            let taskList = tasks.get();
+            var sortedList = _.sortBy(taskList, "order");
+            let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
+            let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
+            let listId = store.get("$list.id");
+            let orderToInsert = store.get("$list.taskAddAsFirst");
+            let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert);    
+            tasks.append(task);
+            boardDoc
                 .collection("tasks")
                 .doc(task.id)
                 .set(task);
@@ -350,8 +345,6 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.alt:
                     let st = prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
-// console.log("st.order");
-// console.log(st.order);
                     set("activeTaskId", st.id);
                     this.addSubtaskTask(e, instance);
                     break;
@@ -367,8 +360,6 @@ export default ({ref, get, set}) => {
                 case KeyCode.right:
                     if (e.ctrlKey) this.moveTaskRight(e, instance);
                     else if (e.shiftKey) this.makeTaskSubtask(e, instance);
-                    // this.addSubtaskTask(e, instance);
-                    // else if (e.keyCode(18)) 
                     break;
 
                 case KeyCode.left:
