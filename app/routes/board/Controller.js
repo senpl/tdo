@@ -254,10 +254,10 @@ export default ({ref, get, set}) => {
 
         makeTaskSubtask(e, {store}) {
             e.stopPropagation();
-            e.preventDefault();
-            let {$task} = store.getData();
-            let aboveId=getNotDeletedUpperTaskIdForList(
-                tasks.get(),$task.id);
+            let { $task } = store.getData();
+            let taskList = tasks.get();
+            var sortedList = _.sortBy(taskList, "order");
+            let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
             updateTask({ ...$task, parentId: aboveId });
         },
 
@@ -338,13 +338,12 @@ export default ({ref, get, set}) => {
                 case KeyCode.insert:
                 case code("O"):
                     let nt = getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code);
-
                     set("activeTaskId", nt.id);
                     updateTask(nt);
                     break;
 
                 case KeyCode.alt:
-                    let st = prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+                    let st = prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
                     set("activeTaskId", st.id);
                     this.addSubtaskTask(e, instance);
                     break;
@@ -364,7 +363,6 @@ export default ({ref, get, set}) => {
 
                 case KeyCode.left:
                     if (e.ctrlKey) this.moveTaskLeft(e, instance);
-                    else if (e.shiftKey) this.makeTaskMainTask(e, instance);
                     break;
             }
         },
@@ -489,7 +487,7 @@ function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, co
     return nt;
 }
 
-function prepereOtherTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+function prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
     let nt = prepareTask(t.listId, t.order, t.parentId, true);
     return nt;
 }

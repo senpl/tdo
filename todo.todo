@@ -1,10 +1,16 @@
+☐ Zobaczyć, jak to jest robione w pythonie, bo może nie ma co wyważać otwartych drzwi.
+getNotDeletedUpperOrderIdForList i getNotDeletedUpperTaskIdForList przerobić w jedną general metod?
+☐ Spróbować wywalić kopię metody dodającej
+☐ Niech insertion point dla samych zadań też dodaje na górę
+    ☐ Przerobić metodę dodającą, żeby parametr brała dodający kierunek 
+    ☐ Albo zrobić to przez named parameter
+☐ Opcja zwijania i rozwijania zadań
+☐ Naprawić insertion point
+
+☐ Schować wyświetlanie indexu i parentId
 
 ☐ Niech mogę oglądać zadania na telefonie
     ☐ niech mogę zmieniać ich kolejność
-
-☐ Działa tylko z samej góry
-    ☐ I na tą chwilę to wystarczające jest
-
 
 ☐ Niech insertion działa też dla zwykłych zadań
     ☐ Zmienić parametr i odwołania do niego
