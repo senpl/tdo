@@ -60,8 +60,8 @@ const styleSubtaskWhenNeeded = (item)=>
 };
 
 const subtaskStyle = {
-  "margin-left": "10px",
-  border: "5px solid pink"
+  "margin-left": "10px"
+  // ,  border: "5px solid pink"
 };
 
 export default (
