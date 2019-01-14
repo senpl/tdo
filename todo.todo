@@ -1,3 +1,23 @@
+☐ Spróbować samemu dodać opcje
+    ☐ Przycisk do usuniecia wszystkich deleted
+        ☐ Bo to mi ułatwi/przyspieszy wszelki debugging
+            ☐ Dodać przycisk
+            ☐ akcja przycisku czyści liste z tych, które mają deleted=true
+    ☐ teraz dodawanie podzadania działa, choć dodaje ponad zadanie, a powinno pod
+        ☐ Może to wynikać z użycia parametru add above
+    
+    ☐ Niech zadania mają tylko podzadania, bez skomplikowanych węzłowych zależności
+        ☐ bo tak będzie na początek najprościej i lepiej odda obecne działanie aplikacji
+        ✔ ok. teraz to działa @done (January 14th 2019, 15:35)
+        ✔ Nie umiem tego specjalnie zrobić @done (January 14th 2019, 15:34)
+            ✔ Nie dostaje poprawnego parentId @done (January 14th 2019, 15:34)
+                ✔ Zbadać czemu  @done (January 14th 2019, 15:34)
+    ☐ wrócić do poprzenio działającej wersji
+    ☐ na początek niech da się poszczególne węzły zwijać, zawijać i niech to będzie zapisywane
+
+☐ Naprawić insertion dla nowego parametru
+	- utworzyć jako nowy patch
+	- spróbować utworzyć z tego pull requesta
 ☐ Zobaczyć, jak to jest robione w pythonie, bo może nie ma co wyważać otwartych drzwi.
 getNotDeletedUpperOrderIdForList i getNotDeletedUpperTaskIdForList przerobić w jedną general metod?
 ☐ Spróbować wywalić kopię metody dodającej
