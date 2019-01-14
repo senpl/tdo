@@ -99,6 +99,30 @@ export default ({ref, get, set}) => {
         return modifiedTasks;
     };
 
+    const getDeletedIds = (list) => {
+        let foundedIdToDelete=[];
+        list.forEach(element => {
+            if(element.deleted){
+                foundedIdToDelete.push(element.id)
+            }
+        });
+        return foundedIdToDelete;
+
+
+        // let foundedMainTaskOrder = 0;
+        // let finalOrder = 0;
+        // list.forEach(element => {
+        //     if (element.deleted !== true && element.id != taskId) {
+        //         foundedMainTaskOrder = element.order;
+        //     }
+        //     if (element.id === taskId) {
+        //         finalOrder = foundedMainTaskOrder;
+        //         return finalOrder + 1;
+        //     }
+        // });
+        // return finalOrder;
+    };
+
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
         let foundedMainTaskOrder = 0;
         let finalOrder = 0;
@@ -288,6 +312,18 @@ export default ({ref, get, set}) => {
                 .collection("tasks")
                 .doc(task.id)
                 .set(task);
+        },
+
+        deleteDeletedTasks(e, { store }) {
+            e.preventDefault();
+            let taskList = tasks.get()
+            let deletedIds = getDeletedIds(taskList)
+            for (let idToDelete of deletedIds){
+            boardDoc
+                .collection("tasks")
+                .doc(idToDelete)
+                .delete();
+            }
         },
 
         makeTaskSubtask(e, {store}) {

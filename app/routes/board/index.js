@@ -61,7 +61,6 @@ const styleSubtaskWhenNeeded = (item)=>
 
 const subtaskStyle = {
   "margin-left": "10px"
-  // ,  border: "5px solid pink"
 };
 
 export default (
@@ -148,7 +147,7 @@ export default (
                 <a class="cxe-tasklist-add" onClick="addTask" href="#">
                   Add Task
                 </a>
-                
+                < a href = "#"  onClick = "deleteDeletedTasks"> Delete delated from list < /a>
               </Menu>
             </div>
           </Repeater>
