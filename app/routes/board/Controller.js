@@ -100,10 +100,10 @@ export default ({ref, get, set}) => {
     };
 
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
-        var foundedMainTaskOrder = 0;
-        var finalOrder = 0;
+        let foundedMainTaskOrder = 0;
+        let finalOrder = 0;
         list.forEach(element => {
-            if (element.deleted != false && element.id != taskId) {
+            if (element.deleted !== true && element.id != taskId) {
                 foundedMainTaskOrder = element.order;
             }
             if (element.id === taskId) {
@@ -115,10 +115,10 @@ export default ({ref, get, set}) => {
     };
 
     const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
-        var foundedMainTaskToAdd = 0;
-        var finalUpperId=-1;
+        let foundedMainTaskToAdd = 0;
+        let finalUpperId=-1;
         list.forEach(element => {
-        if (element.deleted != false && element.id != taskId) {
+        if (element.deleted !== true && element.id != taskId) {
             foundedMainTaskToAdd = element.id;
         }
         if(element.id===taskId){
@@ -129,8 +129,27 @@ export default ({ref, get, set}) => {
     return finalUpperId;
     };
 
+    const getMainIdAbove = (list, taskId = 0) => {
+        console.log("list")
+        console.log(list)
+        let foundedMainTaskToAdd = 0;
+        let finalUpperId = -1;
+        list.forEach(element => {
+            if (element.deleted !== true && element.parentId===0 && element.id != taskId) {
+                foundedMainTaskToAdd = element.id;
+            }
+            if (element.id === taskId) {
+                finalUpperId = foundedMainTaskToAdd;
+                console.log("finalUpperId")
+                console.log(finalUpperId)
+                return finalUpperId;
+            }
+        });
+        return finalUpperId;
+    };
+
     const getSortedTasks = listId => {
-        var sortedList = _.sortBy(tasks.get(), "order");
+        let sortedList = _.sortBy(tasks.get(), "order");
         return getTaskList(sortedList, t => t.listId == listId);
     };
 
@@ -139,7 +158,7 @@ export default ({ref, get, set}) => {
     };
 
     const makeTaskSubtask = (list,taskId) => {
-        var upperId = getNotDeletedUpperTaskIdForList(list.taskId);
+        let upperId = getNotDeletedUpperTaskIdForList(list.taskId);
         return upperId;
     };
 
@@ -235,6 +254,7 @@ export default ({ref, get, set}) => {
                 .set(task);
         },
 
+        /** this will ad as substask to current task or subtask */
         addSubtaskTask(e, {store}) {
             e.preventDefault();
             let {$task} = store.getData();
@@ -245,6 +265,24 @@ export default ({ref, get, set}) => {
             let listId = store.get("$list.id");
             let orderToInsert = store.get("$list.taskAddAsFirst");
             let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert);    
+            tasks.append(task);
+            boardDoc
+                .collection("tasks")
+                .doc(task.id)
+                .set(task);
+        },
+
+        addBelowAsMainSubtask(e, { store }) {
+            e.preventDefault();
+            let { $task } = store.getData();
+            let taskList = tasks.get();
+            var sortedList = _.sortBy(taskList, "order");
+            let parentId = getMainIdAbove(sortedList, $task.id)
+            // getNotDeletedUpperTaskIdForList(sortedList, $task.id);
+            let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
+            let listId = store.get("$list.id");
+            let orderToInsert = store.get("$list.taskAddAsFirst");
+            let task = prepareTask(listId, aboveOrder, parentId, orderToInsert);
             tasks.append(task);
             boardDoc
                 .collection("tasks")
@@ -342,11 +380,11 @@ export default ({ref, get, set}) => {
                     updateTask(nt);
                     break;
 
-                case KeyCode.alt:
-                    let st = prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
-                    set("activeTaskId", st.id);
-                    this.addSubtaskTask(e, instance);
-                    break;
+                // case KeyCode.alt:
+                //     let st = prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+                //     set("activeTaskId", st.id);
+                //     this.addBelowAsMainSubtask(e, instance);
+                //     break;
 
                 case KeyCode.up:
                     if (e.ctrlKey) this.moveTaskUp(e, instance);
@@ -357,9 +395,13 @@ export default ({ref, get, set}) => {
                     break;
 
                 case KeyCode.right:
-                    if (e.ctrlKey) this.moveTaskRight(e, instance);
-                    else if (e.shiftKey) this.makeTaskSubtask(e, instance);
+                    let st = prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code);
+                    set("activeTaskId", st.id);
+                    this.addBelowAsMainSubtask(e, instance);
                     break;
+                    // if (e.ctrlKey) this.moveTaskRight(e, instance);
+                    // else if (e.shiftKey) this.makeTaskSubtask(e, instance);
+                    // break;
 
                 case KeyCode.left:
                     if (e.ctrlKey) this.moveTaskLeft(e, instance);
