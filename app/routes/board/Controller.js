@@ -107,20 +107,6 @@ export default ({ref, get, set}) => {
             }
         });
         return foundedIdToDelete;
-
-
-        // let foundedMainTaskOrder = 0;
-        // let finalOrder = 0;
-        // list.forEach(element => {
-        //     if (element.deleted !== true && element.id != taskId) {
-        //         foundedMainTaskOrder = element.order;
-        //     }
-        //     if (element.id === taskId) {
-        //         finalOrder = foundedMainTaskOrder;
-        //         return finalOrder + 1;
-        //     }
-        // });
-        // return finalOrder;
     };
 
     const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
