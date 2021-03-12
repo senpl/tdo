@@ -5,9 +5,10 @@ module.exports = {
         [
             "cx-env",
             {
-                targets: {
-                    chrome: 66
-                },
+                // targets: {
+                //     chrome: 66
+                // },
+                
                 loose: true,
                 modules: false,
                 cx: {

@@ -140,8 +140,8 @@ export default ({ref, get, set}) => {
     };
 
     const getMainIdAbove = (list, taskId = 0) => {
-        console.log("list")
-        console.log(list)
+        // console.log("list")
+        // console.log(list)
         let foundedMainTaskToAdd = 0;
         let finalUpperId = -1;
         list.forEach(element => {
@@ -150,8 +150,8 @@ export default ({ref, get, set}) => {
             }
             if (element.id === taskId) {
                 finalUpperId = foundedMainTaskToAdd;
-                console.log("finalUpperId")
-                console.log(finalUpperId)
+                // console.log("finalUpperId")
+                // console.log(finalUpperId)
                 return finalUpperId;
             }
         });

@@ -14,7 +14,7 @@ if (!firebase.default.apps.length) {
 const auth = firebase.auth();
 const storage = firebase.storage();
 const functions = firebase.functions();
-const firestore = firebase.firestore();
+// const firestore = firebase.firestore();
 let messaging = null;
 try {
     if (firebase.messaging.isSupported()) {
@@ -29,7 +29,7 @@ export {
     auth,
     storage,
     functions,
-    firestore,
+    // firestore,
     messaging
 };
 

@@ -1,12 +1,13 @@
-import "firebase/firestore";
+// import "firebase/firestore";
 
-import { firebase,firestore } from "./firebase";
+import {firebase} from "./firebase";
+const firestore = firebase.firestore();
 
 firestore.settings({
     timestampsInSnapshots: true
 })
 
-export default firestore;
+export {firestore};
 
 // firestore.settings(settings);
 
