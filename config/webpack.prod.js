@@ -12,27 +12,39 @@ var specific = {
     rules: [
       {
         test: /\.scss$/,
-        loaders: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        use: [
+          "css-loader", "sass-loader"
+        // loader: "css-loader",
+        ],
       },
+      // {
+      //   test: /\.scss$/,
+      //   use: [
+      //     loader: "sass-loader",
+      //   ]
+      // },
       {
         test: /\.css$/,
-        loaders: [MiniCssExtractPlugin.loader, "css-loader"]
+      use: ["css-loader"
+      ]
       }
     ]
   },
 
   plugins: [
-    new CopyWebpackPlugin([
-      {
+    new CopyWebpackPlugin({
+      patterns: [
+        {
         from: path.join(__dirname, "../assets"),
         to: path.join(__dirname, "../dist/assets")
-      },
+        },
       {
         from: path.resolve(__dirname, "./netlify.redirects"),
         to: "_redirects",
         toType: "file"
-      }
-    ]),
+      },
+    ],
+  },),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),

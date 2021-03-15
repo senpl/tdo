@@ -8,7 +8,9 @@ module.exports = {
                 // targets: {
                 //     chrome: 66
                 // },
-                
+                  targets: {
+                      esmodules: true,
+                  },
                 loose: true,
                 modules: false,
                 cx: {

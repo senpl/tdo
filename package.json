@@ -7,7 +7,7 @@
     "test": "exit 0",
     "start": "webpack serve --config config/webpack.dev.js --open",
     "start:dev": "webpack serve ",
-    "build": "webpack --config config/webpack.prod.js",
+    "build": "webpack serve --config config/webpack.prod.js",
     "build:extension": "webpack --config config/webpack.extension.js"
   },
   "repository": {
@@ -42,9 +42,10 @@
     "@firebase/app-types": "^0.3.2",
     "@babel/core":"^7.0.0",
     "@types/react":"^16.0.5",
+    "@babel/preset-env": "^7.0.0-0",
     "babel-core": "^7.0.0",
     "babel-loader": "^8.2.2",
-    "babel-preset-cx-env": "^18.5.0",
+    "babel-preset-cx-env": "^21.3.0",
     "babel-preset-env": "1.6.1",
     "crx-webpack-plugin": "^0.1.5",
     "css-loader": "^5.1.2",
