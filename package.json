@@ -27,13 +27,14 @@
   "homepage": "https://github.com/mstijak/tdo#readme",
   "dependencies": {
     "copy-webpack-plugin": "^8.0.0",
-    "cx": "^21.1.7",
+    "cx": "^18.11.6",
     "cx-react": "^17.10.0",
     "cx-redux": "^18.5.2",
     "firebase": "^8.3.0",
     "marked": "^0.5.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-router": "^5.2.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "uid": "0.0.2"
