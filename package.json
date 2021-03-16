@@ -26,8 +26,9 @@
   },
   "homepage": "https://github.com/mstijak/tdo#readme",
   "dependencies": {
+     "@babel/polyfill": "^7.2.5",
     "copy-webpack-plugin": "^8.0.0",
-    "cx": "^18.11.6",
+    "cx": "^18.12.7",
     "cx-react": "^17.10.0",
     "cx-redux": "^18.5.2",
     "firebase": "^8.3.0",
@@ -40,11 +41,12 @@
     "uid": "0.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0-0",
-    "@firebase/app-types": "^0.3.2",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-typescript": "^7.3.3",
+    "@firebase/app-types": "^0.3.7",
     "@types/react": "^16.0.5",
-    "babel-core": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.2.2",
     "babel-preset-cx-env": "^21.3.0",
     "babel-preset-env": "1.6.1",

@@ -1,6 +1,9 @@
 import { startHotAppLoop, History, FocusManager } from "cx/ui";
 import { Debug } from "cx/util";
-import { createStore, ReduxStoreView } from "cx-redux";
+import {
+  createStore,
+  ReduxStoreView
+} from "redux";
 import { applyMiddleware } from "redux";
 import Routes from "./routes";
 import "./index.scss";

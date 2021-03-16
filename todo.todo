@@ -1,4 +1,19 @@
-☐ poszukać odpowiednika na VUE 
+☐ Zmergować najnowszą wersję
+    ☐ Merge do najnowszej wersji
+    ☐ Domergować swoje zmiany
+    ☐ Dograć swoje zmiany z subtasks
+    ☐ rozważyć tą biblioteke, o której wspominałem w komentarzu
+        ☐ https://github.com/frontend-collective/react-sortable-tree
+☐ zwijanie i rozwijanie zadań nie działa w chwili obecnej
+    ☐ jeśli ma checkbox to te pod nim dostają status zwinięty
+☐ Zacząć zachęcać do używania
+☐ ustawić lepszy skrót do podzadań, bo obecny w bok to nie do końca to co być powinno w finalnej wersji
+
+☐ Wysłać wersję działającą bez nie potrzebnych zmian
+☐ Przygotować działającą przez przyciski nawigację
+    A więc przeniś zadanie do góry
+☐ Nie działa, gdy jest na samej górze, ale mogę z tym żyć
+
 ☐ Spróbować samemu dodać opcje
     ☐ Przycisk do usuniecia wszystkich deleted
         ☐ Bo to mi ułatwi/przyspieszy wszelki debugging

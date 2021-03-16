@@ -36,7 +36,7 @@ module.exports = {
         "react-dom": "ReactDOM"
     },
     output: {
-        path: paths.dist,
+        path: paths.app,
         filename: "[name].js"
     },
     plugins: [

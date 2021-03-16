@@ -24,7 +24,14 @@ var specific = {
         hot: true,
         port: 8088,
         noInfo: false,
+        open: false,
+        overlay: {
+            warnings: true,
+            errors: true,
+        },
         inline: true,
+            disableHostCheck: true,
+   contentBase: 'dist',
         historyApiFallback: true
     }
 };
