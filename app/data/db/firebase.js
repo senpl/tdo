@@ -24,7 +24,7 @@ try {
 const perf = firebase.performance();
 
 export {
-    firebase
-}
+    firebase,
+};
 
 

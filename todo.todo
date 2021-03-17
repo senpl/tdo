@@ -1,0 +1,135 @@
+☐ poszukać odpowiednika na VUE 
+☐ Spróbować samemu dodać opcje
+    ☐ Przycisk do usuniecia wszystkich deleted
+        ☐ Bo to mi ułatwi/przyspieszy wszelki debugging
+            ☐ Dodać przycisk
+            ☐ akcja przycisku czyści liste z tych, które mają deleted=true
+    ☐ teraz dodawanie podzadania działa, choć dodaje ponad zadanie, a powinno pod
+        ☐ Może to wynikać z użycia parametru add above
+    
+    ☐ Niech zadania mają tylko podzadania, bez skomplikowanych węzłowych zależności
+        ☐ bo tak będzie na początek najprościej i lepiej odda obecne działanie aplikacji
+        ✔ ok. teraz to działa @done (January 14th 2019, 15:35)
+        ✔ Nie umiem tego specjalnie zrobić @done (January 14th 2019, 15:34)
+            ✔ Nie dostaje poprawnego parentId @done (January 14th 2019, 15:34)
+                ✔ Zbadać czemu  @done (January 14th 2019, 15:34)
+    ☐ wrócić do poprzenio działającej wersji
+    ☐ na początek niech da się poszczególne węzły zwijać, zawijać i niech to będzie zapisywane
+
+☐ Naprawić insertion dla nowego parametru
+	- utworzyć jako nowy patch
+	- spróbować utworzyć z tego pull requesta
+☐ Zobaczyć, jak to jest robione w pythonie, bo może nie ma co wyważać otwartych drzwi.
+getNotDeletedUpperOrderIdForList i getNotDeletedUpperTaskIdForList przerobić w jedną general metod?
+☐ Spróbować wywalić kopię metody dodającej
+☐ Niech insertion point dla samych zadań też dodaje na górę
+    ☐ Przerobić metodę dodającą, żeby parametr brała dodający kierunek 
+    ☐ Albo zrobić to przez named parameter
+☐ Opcja zwijania i rozwijania zadań
+☐ Naprawić insertion point
+
+☐ Schować wyświetlanie indexu i parentId
+
+☐ Niech mogę oglądać zadania na telefonie
+    ☐ niech mogę zmieniać ich kolejność
+
+☐ Niech insertion działa też dla zwykłych zadań
+    ☐ Zmienić parametr i odwołania do niego
+    ☐ sprawdzić, czy działa to dla samych zadań jak powinno
+☐ Sprawdzić, jak testy się włączają w cxjs
+
+☐ Niech przenoszenie zadania przenosi też jego podzadania
+☐ Niech przenoszenie zadan przenosi tez podzadania
+    ✔ Sprawdzić czy insertion in place dziala @done (12/5/2018, 6:41:08 AM)
+    ✔ Niech dodawnie zadan dodają na samą góre @done (12/5/2018, 6:41:53 AM)
+        ✔ Wygląda, że znajduje najniższy, a powinien najwyższy wolny id @done (12/5/2018, 6:41:32 AM)
+        ✔ spróbować zabrać order id @done (12/5/2018, 6:41:58 AM)
+    ☐ Przemyśleć finalnie klawisze do przenoszenia zadan
+        ☐ s niech bedzie klawiszem do tworzenia podzadan
+        ☐ Niech strzalka w bok i shift TWORZA PODZADANIE
+        ✔ shift+strzalki niech przenoszą podzadania @done (12/5/2018, 6:22:57 AM)
+        ☐ Dodac opis do pomocy
+    ☐ niech zacznie działać po przenoszeniu przypiswanie upperId
+        ☐ dla akcji w dól
+        ☐ dla akcji w góre
+    ☐ niech po przeniesieniu danego id przeniesie na nową pozycje wszyskie jego podid
+        ☐ Czyli wywouje sie zmiana polozenia
+            ☐ Po niej mamy pozition id
+                ☐ To pozition id wykożytać do przenosin dalszych
+                ☐ Wszystkie podzadania przenieść
+        
+☐ Dodać opcję next action ukrywająca wszystko poza obecnie robionym podzadaniem i jego podzadaniami
+
+☐ Naprawić insertion point przez update task below order
+
+
+    ✔ Przycisk do tworzenia subrasku przypisać na strzalke w bok @done (12/2/2018, 10:55:30 AM)
+    ✔ niech dziala najprosciej i insert, a potem przenies w bok. @done (12/2/2018, 10:55:33 AM)
+    ☐ Dziala dla nowo tworzonych, tak samo zrobić dla przenoszonych w góre/dól
+        ☐ Przenoszenie w górę
+            ☐ Nich przenosząc w górę szuka, orderu 1 miejsca wyżej nad nim
+                ☐ jeśli to parent id to przenosi o 2 miejsca i uaktualnia parentId
+                ☐ Przypisuje porentId z elementu który jest nad nim(o ile istnieje)
+                ☐ Uaktualnia pozycje innych zadań
+                ☐ Uaktualnia order zmienianego zadania
+        ☐ Przenoszenie zadania w dół
+            ☐ Nich przenosząc w dół szuka, orderu 1 miejsca niżej pod nim
+                ☐ jeśli to inny parent id to przenosi o 2 miejsca i uaktualnia parentId na tego nowego
+                ☐ Przypisuje porentId z elementu który jest nad nim(o ile istnieje)
+                ☐ Uaktualnia pozycje innych zadań między naszymi
+                ☐ Uaktualnia order zmienianego zadania
+☐ Simplest subtask
+    ☐ Znaleźć element dodający zadanie
+        Jest wywoływany z app/routes/board/index.js <a class="cxe-tasklist-add" onClick="addTask" href="#">Add Task</a>
+        mam element dodający zadanie, jest w routers/board\Controller -> metoda AddTask wywołje pobranie listId i dodanie do tasks taska
+        ten utworzony task zostaje dodany do listy
+        ☐ opcja dodawania zadania jako podzadanie
+            ☐ Niech po wywołaniu akcji dodaje się addSubtask
+            ☐ a subtask dostaje albo -1 albo z zadania nad nim
+        ☐ posprzątać kod do subtasków
+            ☐ zwłaszcza tam gdzie dodawałem subtask
+            ☐ Przypisać nie używany przycisk
+            ☐ opcja wskazywania main task przy podnoszeniu subtask'ów
+        ☐ jest w app/routes/board/Controller.js addTask linia 164
+            dodać do dodawanego taska parentId i tak, niech lista się wypisuje 
+                tasks.append dodaje zadanie
+                ☐ niech wyświetla te z parentId 0 ,
+                ✔ wyświetl subtask jako subtask @done (11/29/2018, 10:11:07 AM)
+                    ☐ wyświetl tylko jak id się zgadza nad nim
+                ☐ niech wyświetla te z parentId jeśli mają odpowiednie id
+                    ✔ Niech przycisk zmienia zadanie w podzadanie @done (11/28/2018, 4:52:13 PM)
+                        ☐ Wprowadzając id do tego nad nim jako parentId
+                            ☐ Czyli na przycisk update zadania, i staje się ono podzadaniem
+                                ✔ Wywołać akcje po naciśnięciu na przycisku klawiszu @done (11/28/2018, 4:45:00 PM)
+                                ✔ niech akcja doda parent id @done (11/28/2018, 4:44:54 PM)
+                                    ✔ zdobyc id elementu nad @done (11/28/2018, 4:42:14 PM)
+                                        ✔ Niech leci jak wpisana funkcja @done (11/28/2018, 4:42:10 PM)
+                                    ✔ wpisać to id jako parentId @done (11/28/2018, 4:45:08 PM)
+                            
+                            ☐ potem ewentualnie powrotna zmiana
+                    ☐ Zrobić dodawanie subtask'a 
+                        Zacząć od działającego
+                    ☐ a potem niech wyświetla dla każdego węzła który ma parent id poniżej jego rodzica
+                        
+                        ☐ niech tu działa filtr dla tego taska podtaski
+                            ✔ nie zbieram poprawnie id main taska, zdobyć je. @done (11/28/2018, 2:06:38 PM)
+                            ✔ stworzyć porawne dane @done (11/28/2018, 2:13:54 PM)
+                            ✔ addSubtask nie wprowadza poprawnego klucza, poprawić @done (11/28/2018, 2:14:05 PM)
+                            
+                       ✔ niech ma jakiś prosty styl @done (11/28/2018, 10:53:19 AM)
+                    ☐ niech też odpowiednio modyfikuje order
+                    ✔ Niech doda podzadanie do najwżej znajdującego się zadania, czyli niech doda mu parentId z najwyzszego węzła @done (11/27/2018, 4:05:59 PM)
+                ☐ case KeyCode.insert: tu dodać swój subtask keyboard na początek
+                ☐ Wygląda, że działa dodawnie tylko na dół listy w tej chwili
+       ☐ tasks should have parent Id
+       ☐ Znaleźć gdzie jest wyświetlany obecnie task
+       ☐ Check how it is currently presented
+    ☐ tasks should be presented below their parent
+       ☐ Could we make it looks good on same list
+    ☐ Task could be promoted to be main tasks with keyboard navigation
+    ☐ Marking tasks as done should mark all subtasks as completed?
+
+☐ Zawijanie i rozwijanie podzadan
+    ☐ Niech ukrywa te poniżej
+☐ ustawić sobie chrome debugger ???
+✘ nie zbiera id z list wszystkich, dlatego to działa, powinno zbierać z konkretnie tej listy. @cancelled (12/4/2018, 11:50:47 AM)

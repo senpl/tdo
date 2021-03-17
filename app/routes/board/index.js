@@ -19,6 +19,20 @@ function filterLists(l, activeListId) {
     return l.listId == activeListId && !l.deleted;
 }
 
+const styleSubtaskWhenNeeded = (item) => {
+    let styleTask = "";
+    let {
+        $task
+    } = item;
+    if ($task.parentId != 0)
+        styleTask = subtaskStyle;
+    return styleTask;
+};
+
+const subtaskStyle = {
+    "margin-left": "10px"
+};
+
 export default <cx>
     <div class="cxb-taskboard" controller={Controller} layout={FirstVisibleChildLayout}>
         <div class="cxe-taskboard-loading" visible-expr="{$page.status}=='loading'">
@@ -103,7 +117,7 @@ export default <cx>
                                 filter={filterItems}
                                 filterParams-bind="$list.id"
                             >
-                                <MenuItem class="menu-item">
+                                < MenuItem style = {styleSubtaskWhenNeeded} class = "menu-item" >
                                     <DragSource data={{ type: "item" }} hideOnDrag handled>
                                         <DragHandle
                                             style="position:absolute; display: inline; margin:3px; cursor: move; font-size:15px">

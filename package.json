@@ -26,11 +26,13 @@
   "homepage": "https://github.com/mstijak/tdo#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "copy-webpack-plugin": "^5.0.2",
+    "array-uniq": "^2.1.0",
+    "copy-webpack-plugin": "^8.0.0",
     "core-js": "^3.0.0",
     "cx": "^19.10.6",
     "cx-react": "^17.10.0",
     "firebase": "^8.3.0",
+    "lodash": "4.17.21",
     "marked": "^0.6.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -57,9 +59,9 @@
     "url-loader": "^1.1.2",
     "webpack": "^5.25.1",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.2.1",
+    "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^4.2.1",
     "workbox-webpack-plugin": "^4.3.1",
-    "zip-webpack-plugin": "^3.0.0"
+    "zip-webpack-plugin": "^4.0.1"
   }
 }

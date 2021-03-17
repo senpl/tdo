@@ -1,4 +1,4 @@
-import {HtmlElement, TextField, TextArea, LookupField, Button, enableTooltips} from 'cx/widgets';
+import {HtmlElement, TextField, TextArea, LookupField, Button, enableTooltips, Select} from 'cx/widgets';
 import {LabelsTopLayout} from 'cx/ui';
 import upperCase from 'upper-case';
 import { expression } from 'cx/data';
@@ -80,6 +80,13 @@ export default <cx>
             />
         </div>
 
+        < div layout = {{ type: LabelsTopLayout, mod: "stretch"}}>
+          <Select value: bind = "$list.taskAddAsFirst"
+                      label = "New task order" >
+              <option value = "false" text = "New task on list last element" / >
+              <option value = "true" text = "New task on list first element" / >
+          </Select> 
+        </div>
         <br/>
 
         <div>
