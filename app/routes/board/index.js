@@ -24,7 +24,7 @@ const styleSubtaskWhenNeeded = (item) => {
     let {
         $task
     } = item;
-    if ($task.parentId != 0)
+    if ($task.parentId != undefined )
         styleTask = subtaskStyle;
     return styleTask;
 };
