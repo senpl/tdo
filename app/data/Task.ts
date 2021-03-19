@@ -8,4 +8,5 @@ export interface Task {
     completedDate?: string;
     order: number;
     listId: string;
+    parentId: string;
 }
