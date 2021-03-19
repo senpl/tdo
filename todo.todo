@@ -1,4 +1,16 @@
-☐ poszukać odpowiednika na VUE 
+☐ subtaski poniżej uaktualniają niepoprawnie za dużo, powinny uaktualniać puki partnerId taki sam.
+☐ subtask nie jest ustawiany poprawnie
+    powinien mioeć inny styl
+
+☐ Nauczyć się w nowym modelu kontrolować order
+    ☐ wyświetlić go przy tasku
+
+☐ zacząć od wstawiania jak teraz jest przy insercie z subtaskami
+
+☐ Niech dodawanie głównych tasków na razie działa jak powinno
+
+☐ Zawsze dodaje na 2gim miejscu jako task, nie jako subtask
+
 ☐ Spróbować samemu dodać opcje
     ☐ Przycisk do usuniecia wszystkich deleted
         ☐ Bo to mi ułatwi/przyspieszy wszelki debugging
