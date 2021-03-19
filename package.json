@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/mstijak/tdo#readme",
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
     "array-uniq": "^2.1.0",
     "copy-webpack-plugin": "^8.0.0",
     "core-js": "^3.0.0",

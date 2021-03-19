@@ -538,13 +538,6 @@
     "@babel/helper-regex" "^7.4.3"
     regexpu-core "^4.5.4"
 
-"@babel/polyfill@^7.2.5":
-  version "7.4.3"
-  resolved "https://registry.npmjs.org/@babel/polyfill/-/polyfill-7.4.3.tgz"
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.2"
-
 "@babel/preset-env@^7.2.3":
   version "7.4.3"
   resolved "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.4.3.tgz"
@@ -2014,10 +2007,6 @@ core-js@^2.4.0:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
-
-core-js@^2.6.5:
-  version "2.6.5"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-2.6.5.tgz"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
