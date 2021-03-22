@@ -17,6 +17,20 @@ import uid from "uid";
 //     return nt;
 // }
 
+export function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
+    taskTracker.add(taskToAdd, {
+        suppressUpdate: true,
+        suppressSync: true
+    });
+    taskTracker.reorderList(taskToAdd.listId);
+    editTask(id);
+}
+export function prepareAndAddTaskAndUpdateList(listId, aboveOrder, aboveId, orderToInsert, idS, taskTracker, editTask) {
+    let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert, idS);
+    addTaskAndUpdateList(taskTracker, task, editTask, idS);
+}
+
+
 function getPrevOrder(currentOrder, orderList) {
     orderList.sort();
     let index = orderList.indexOf(currentOrder);
@@ -129,6 +143,14 @@ export const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
     return finalOrder;
 };
 
+export function getOrderAndIdOfTasksAbove(tasks, $task, store) {
+    let taskList = tasks.get();
+    let sortedList = _.sortBy(taskList, "order");
+    let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
+    let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
+    let orderToInsert = store.get("$list.taskAddAsFirst");
+    return { aboveOrder, aboveId, orderToInsert };
+}
 
 // const getMainIdAbove = (list, taskId = 0) => {
 //     let foundedMainTaskToAdd = 0;

@@ -32,8 +32,9 @@ import {
 } from "../../components/toasts";
 const OneDayMs = 24 * 60 * 60 * 1000;
 import {
-    getNotDeletedUpperOrderIdForList, getNotDeletedUpperTaskIdForList, prepareTask
-} from "../../data/SubtasksUtils";
+    addTaskAndUpdateList, prepareAndAddTaskAndUpdateList,
+    getOrderAndIdOfTasksAbove,
+    getNotDeletedUpperTaskIdForList} from "../../data/SubtasksUtils";
 
 export default ({
     store,
@@ -551,26 +552,4 @@ export default ({
     };
 };
 
-function getOrderAndIdOfTasksAbove(tasks,$task,store) {
-    let taskList=tasks.get();
-    let sortedList=_.sortBy(taskList,"order");
-    let aboveId=getNotDeletedUpperTaskIdForList(sortedList,$task.id);
-    let aboveOrder=getNotDeletedUpperOrderIdForList(sortedList,$task.id);
-    let orderToInsert=store.get("$list.taskAddAsFirst");
-    return {aboveOrder,aboveId,orderToInsert};
-}
-
-function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
-    taskTracker.add(taskToAdd,{
-        suppressUpdate: true,
-        suppressSync: true
-    });
-    taskTracker.reorderList(taskToAdd.listId);
-    editTask(id);
-}
-
-function prepareAndAddTaskAndUpdateList(listId,aboveOrder,aboveId,orderToInsert,idS,taskTracker,editTask) {
-    let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert, idS);
-    addTaskAndUpdateList(taskTracker, task, editTask, idS)
-}
 
