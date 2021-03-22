@@ -80,14 +80,13 @@ export const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
 // @taskAddAsFirst if task should be first or last on added list
 // @insertPosition order on which insert
 export const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsFirst = false, id = "1") => {
-    let order, maxOrder, orderToSet;
-    orderToSet = insertPosition;
+    let orderToSet = insertPosition;
     let idToSet = id;
     if (id == "1") {
         idToSet = uid();
     }
     return {
-        id,
+        id: idToSet,
         listId,
         createdDate: new Date().toISOString(),
         order: orderToSet,
