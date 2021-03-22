@@ -32,9 +32,12 @@ import {
 } from "../../components/toasts";
 const OneDayMs = 24 * 60 * 60 * 1000;
 import {
-    addTaskAndUpdateList, prepareAndAddTaskAndUpdateList,
+    addTaskAndUpdateList,
     getOrderAndIdOfTasksAbove,
-    getNotDeletedUpperTaskIdForList} from "../../data/SubtasksUtils";
+    getNotDeletedUpperTaskIdForList,
+    prepareAndAddTaskAndUpdateList
+}
+from "../../data/SubtasksUtils";
 
 export default ({
     store,
