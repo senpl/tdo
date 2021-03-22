@@ -1,11 +1,14 @@
 ☐ Wydzielić subtaski do osobnej klasy
+☐ Oczyścić kod i stworzyć nową gałąź pod merge requesta
+
+☐ Wydzielić dodawnie tasku do osobnej metody
 ☐ skróty klawiszowe dla podzadań dopracować i oprogramować
     ☐ main subtask button
         ☐ Subtask of designed level of complication
 ☐ Posprzątać nie używany kod
 ☐ Zwijanie podzadań z danego zadania
     extended i Visible
-    ☐ Strzałki jak w treenote
+    ☐ Strzałki jak w TNote
 ☐ Dodać callapsed do taska każdego
     ☐ Może nie mieć wartości, wartość zwiniątą i wartość zawiniętą
         > zwinięte

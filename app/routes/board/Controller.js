@@ -431,9 +431,8 @@ export default ({
                     let sortedList = _.sortBy(taskList, "order");
                     let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
                     let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
-                    let listId = store.get("$list.id");
                     let orderToInsert = store.get("$list.taskAddAsFirst");
-                    prepareAndAddTaskAndUpdateList($task, aboveOrder, aboveId, orderToInsert, idS, taskTracker, listId, editTask);
+                    prepareAndAddTaskAndUpdateList($task.listId, aboveOrder, aboveId, orderToInsert, idS, taskTracker, editTask);
                     break;
 
                 case code("O"):
@@ -451,7 +450,7 @@ export default ({
                         order: $task.order + offset,
                         createdDate: new Date().toISOString()
                     }
-                    addTaskAndUpdateList(taskTracker,taskToAdd,$task,editTask,id);
+                    addTaskAndUpdateList(taskTracker,taskToAdd,editTask,id);
                     break;
 
                 case KeyCode.up:
@@ -555,17 +554,17 @@ export default ({
     };
 };
 
-function addTaskAndUpdateList(taskTracker,taskToAdd,$task,editTask,id) {
+function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
     taskTracker.add(taskToAdd,{
         suppressUpdate: true,
         suppressSync: true
     });
-    taskTracker.reorderList($task.listId);
+    taskTracker.reorderList(taskToAdd.listId);
     editTask(id);
 }
 
-function prepareAndAddTaskAndUpdateList($task,aboveOrder,aboveId,orderToInsert,idS,taskTracker,listId,editTask) {
-    let task=prepareTask($task.listId,aboveOrder,aboveId,orderToInsert,idS);
-    addTaskAndUpdateList(taskTracker, task, $task,editTask,idS)
+function prepareAndAddTaskAndUpdateList(listId,aboveOrder,aboveId,orderToInsert,idS,taskTracker,editTask) {
+    let task = prepareTask(listId, aboveOrder, aboveId, orderToInsert, idS);
+    addTaskAndUpdateList(taskTracker, task, editTask, idS)
 }
 
