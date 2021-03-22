@@ -36,7 +36,7 @@ import {
     updateArray
 } from "cx/data";
 import {
-    getOrderList
+    getNotDeletedUpperOrderIdForList, getNotDeletedUpperTaskIdForList, prepareTask
 } from "../../data/SubtasksUtils";
 
 export default ({
@@ -109,100 +109,6 @@ export default ({
                     store.silently(() => set("newTaskId", null));
             }
         );
-    }
-
-    // increease order and generate new task id
-    // @partnerId is used to indicate subtask parent
-    // @taskAddAsFirst if task should be first or last on added list
-    // @insertPosition order on which insert
-    const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsFirst = false, id = "1") => {
-        let order, maxOrder, orderToSet;
-        orderToSet = insertPosition;
-        let idToSet=id;
-        if(id=="1"){
-            idToSet = uid();
-        }
-        return {
-            id,
-            listId,
-            createdDate: new Date().toISOString(),
-            order: orderToSet,
-            parentId: parentId
-        };
-    };
-
-    const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-        let modifiedTasks = tasksToUpdate;
-        for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
-            const task = modifiedTasks[index];
-            task.order = index + 2;
-            modifiedTasks[index] = task;
-        }
-        return modifiedTasks;
-    };
-
-    const getDeletedIds = (list) => {
-        let foundedIdToDelete = [];
-        list.forEach(element => {
-            if (element.deleted) {
-                foundedIdToDelete.push(element.id)
-            }
-        });
-        return foundedIdToDelete;
-    };
-
-    const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
-        let foundedMainTaskOrder = 0;
-        let finalOrder = 0;
-        list.forEach(element => {
-            if (element.deleted !== true && element.id != taskId) {
-                foundedMainTaskOrder = element.order;
-            }
-            if (element.id === taskId) {
-                finalOrder = foundedMainTaskOrder;
-                return finalOrder + 1;
-            }
-        });
-        return finalOrder;
-    };
-
-    const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
-        let foundedMainTaskToAdd = 0;
-        let finalUpperId = -1;
-        list.forEach(element => {
-            if (element.deleted !== true && element.id != taskId) {
-                foundedMainTaskToAdd = element.id;
-            }
-            if (element.id === taskId) {
-                finalUpperId = foundedMainTaskToAdd;
-                return finalUpperId;
-            }
-        });
-        return finalUpperId;
-    };
-
-    const getMainIdAbove = (list, taskId = 0) => {
-        let foundedMainTaskToAdd = 0;
-        let finalUpperId = -1;
-        list.forEach(element => {
-            if (element.deleted !== true && element.parentId === 0 && element.id != taskId) {
-                foundedMainTaskToAdd = element.id;
-            }
-            if (element.id === taskId) {
-                finalUpperId = foundedMainTaskToAdd;
-                return finalUpperId;
-            }
-        });
-        return finalUpperId;
-    };
-
-    const getSortedTasks = listId => {
-        let sortedList = _.sortBy(tasks.get(), "order");
-        return getTaskList(sortedList, t => t.listId == listId);
-    };
-
-    const getSortedTaskOrderList = listId => {
-        return getOrderList(tasks.get(), t => t.listId == listId);
     }
 
     function deleteTask(task) {
