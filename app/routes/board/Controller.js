@@ -269,12 +269,13 @@ export default ({
             store
         }) {
             e.stopPropagation();
+            let listId = store.get("$list.id");
             let taskList = tasks.get();
             var sortedList = _.sortBy(taskList, "order");
             let aboveId = getNotDeletedUpperTaskIdForList(sortedList, task.id);
             task.parentId=aboveId;
             editTask(task.id);
-            taskTracker.reorderList(taskList.id);
+            taskTracker.reorderList(listId);
         },
 
         moveTaskUp(e, {
@@ -427,11 +428,7 @@ export default ({
                     e.preventDefault();
                     e.stopPropagation();
                     let idS = uid();
-                    let taskList = tasks.get();
-                    let sortedList = _.sortBy(taskList, "order");
-                    let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
-                    let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
-                    let orderToInsert = store.get("$list.taskAddAsFirst");
+                    let {aboveOrder,aboveId,orderToInsert}=getOrderAndIdOfTasksAbove(tasks,$task,store);
                     prepareAndAddTaskAndUpdateList($task.listId, aboveOrder, aboveId, orderToInsert, idS, taskTracker, editTask);
                     break;
 
@@ -553,6 +550,15 @@ export default ({
         }
     };
 };
+
+function getOrderAndIdOfTasksAbove(tasks,$task,store) {
+    let taskList=tasks.get();
+    let sortedList=_.sortBy(taskList,"order");
+    let aboveId=getNotDeletedUpperTaskIdForList(sortedList,$task.id);
+    let aboveOrder=getNotDeletedUpperOrderIdForList(sortedList,$task.id);
+    let orderToInsert=store.get("$list.taskAddAsFirst");
+    return {aboveOrder,aboveId,orderToInsert};
+}
 
 function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
     taskTracker.add(taskToAdd,{
