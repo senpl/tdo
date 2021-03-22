@@ -1,4 +1,5 @@
 module.exports = {
+    "sourceType": "unambiguous",
     "cacheDirectory": true,
     "cacheIdentifier": "4",
     "presets": [
