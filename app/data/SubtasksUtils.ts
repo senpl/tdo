@@ -182,3 +182,23 @@ const getMainIdAbove = (list, taskId = 0) => {
     });
     return finalUpperId;
 };
+
+
+        // addBelowAsMainSubtask(e, $task, {
+        //     store
+        // }) {
+        //     e.preventDefault();
+        //     let taskList = tasks.get();
+        //     var sortedList = _.sortBy(taskList, "order");
+        //     let parentId = getMainIdAbove(sortedList, $task.id)
+        //     let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
+        //     let listId = store.get("$list.id");
+        //     let orderToInsert = store.get("$list.taskAddAsFirst");
+        //     let task = prepareTask(listId, aboveOrder, parentId, orderToInsert);
+        //     taskTracker.add(task, {
+        //         suppressUpdate: true,
+        //         suppressSync: true
+        //     });
+        //     taskTracker.reorderList(listId);
+        //     editTask(id);
+        // },

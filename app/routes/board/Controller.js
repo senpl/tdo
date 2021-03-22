@@ -281,25 +281,6 @@ export default ({
             editTask(id);
         },
 
-        addBelowAsMainSubtask(e, $task, {
-            store
-        }) {
-            e.preventDefault();
-            let taskList = tasks.get();
-            var sortedList = _.sortBy(taskList, "order");
-            let parentId = getMainIdAbove(sortedList, $task.id)
-            let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
-            let listId = store.get("$list.id");
-            let orderToInsert = store.get("$list.taskAddAsFirst");
-            let task = prepareTask(listId, aboveOrder, parentId, orderToInsert);
-            taskTracker.add(task, {
-                suppressUpdate: true,
-                suppressSync: true
-            });
-            taskTracker.reorderList(listId);
-            editTask(id);
-        },
-
         makeTaskSubtask(e, task, {
             store
         }) {
@@ -468,13 +449,7 @@ export default ({
                     let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
                     let listId = store.get("$list.id");
                     let orderToInsert = store.get("$list.taskAddAsFirst");
-                    let task2 = prepareTask($task.listId, aboveOrder, aboveId, orderToInsert, idS);
-                    taskTracker.add(task2, {
-                        suppressUpdate: true,
-                        suppressSync: true
-                    });
-                    taskTracker.reorderList(listId);
-                    editTask(idS);
+                    prepareAndAddTaskAndUpdateList($task, aboveOrder, aboveId, orderToInsert, idS, taskTracker, listId, editTask);
                     break;
 
                 case code("O"):
@@ -486,17 +461,13 @@ export default ({
                         offset = +0.1;
 
                     let id = uid();
-                    taskTracker.add({
+                    let taskToAdd = {
                         id,
                         listId: $task.listId,
                         order: $task.order + offset,
                         createdDate: new Date().toISOString()
-                    }, {
-                        suppressUpdate: true,
-                        suppressSync: true
-                    });
-                    taskTracker.reorderList($task.listId);
-                    editTask(id);
+                    }
+                    addTaskAndUpdateList(taskTracker,taskToAdd,$task,editTask,id);
                     break;
 
                 case KeyCode.up:
@@ -600,6 +571,17 @@ export default ({
     };
 };
 
+function addTaskAndUpdateList(taskTracker,taskToAdd,$task,editTask,id) {
+    taskTracker.add(taskToAdd,{
+        suppressUpdate: true,
+        suppressSync: true
+    });
+    taskTracker.reorderList($task.listId);
+    editTask(id);
+}
 
-
+function prepareAndAddTaskAndUpdateList($task,aboveOrder,aboveId,orderToInsert,idS,taskTracker,listId,editTask) {
+    let task=prepareTask($task.listId,aboveOrder,aboveId,orderToInsert,idS);
+    addTaskAndUpdateList(taskTracker, task, $task,editTask,idS)
+}
 
