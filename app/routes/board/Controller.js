@@ -31,10 +31,6 @@ import {
     showUndoToast
 } from "../../components/toasts";
 const OneDayMs = 24 * 60 * 60 * 1000;
-//TODO probably remove as it is used in other way 
-import {
-    updateArray
-} from "cx/data";
 import {
     getNotDeletedUpperOrderIdForList, getNotDeletedUpperTaskIdForList, prepareTask
 } from "../../data/SubtasksUtils";
@@ -74,18 +70,6 @@ export default ({
     };
 
     const listTracker = new BoardListsTracker(boardId, refreshLists);
-
-    const updateTask = (task) => {
-        tasks.update(
-            updateArray,
-            t => ({
-                ...t,
-                ...task
-            }),
-            t => t.id === task.id
-        )
-        //   listTracker.refreshTasks();
-    };
 
     const getVisibleListTasks = (listId) => {
         return tasks
