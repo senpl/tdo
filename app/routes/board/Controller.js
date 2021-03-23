@@ -17,7 +17,6 @@ import {
 } from "cx/widgets";
 
 import uid from "uid";
-import lodash from "lodash"
 import {
     BoardTasksTracker
 } from "../../data/BoardTasksTracker";
@@ -274,8 +273,7 @@ export default ({
         }) {
             e.stopPropagation();
             let taskList = getVisibleListTasks(task.listId);
-            var sortedList = _.sortBy(taskList, "order");
-            let aboveId = getNotDeletedUpperTaskIdForList(sortedList, task.id);
+            let aboveId = getNotDeletedUpperTaskIdForList(taskList, task.id);
             task.parentId=aboveId;
             editTask(task.id);
             taskTracker.reorderList(task.listId);
