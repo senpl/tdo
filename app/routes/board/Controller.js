@@ -273,13 +273,12 @@ export default ({
             store
         }) {
             e.stopPropagation();
-            let listId = store.get("$list.id");
-            let taskList = tasks.get();
+            let taskList = getVisibleListTasks(task.listId);
             var sortedList = _.sortBy(taskList, "order");
             let aboveId = getNotDeletedUpperTaskIdForList(sortedList, task.id);
             task.parentId=aboveId;
             editTask(task.id);
-            taskTracker.reorderList(listId);
+            taskTracker.reorderList(task.listId);
         },
 
         moveTaskUp(e, {
