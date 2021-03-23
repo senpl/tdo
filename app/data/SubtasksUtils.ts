@@ -81,10 +81,8 @@ export const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
 };
 
 export function getOrderAndIdOfTasksAbove(tasks, $task, store) {
-    let taskList = tasks.get();
-    let sortedList = sortBy(taskList, "order");
-    let aboveId = getNotDeletedUpperTaskIdForList(sortedList, $task.id);
-    let aboveOrder = getNotDeletedUpperOrderIdForList(sortedList, $task.id);
+    let aboveId = getNotDeletedUpperTaskIdForList(tasks, $task.id);
+    let aboveOrder = getNotDeletedUpperOrderIdForList(tasks, $task.id);
     let orderToInsert = store.get("$list.taskAddAsFirst");
     return { aboveOrder, aboveId, orderToInsert };
 }

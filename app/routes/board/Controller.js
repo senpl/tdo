@@ -429,7 +429,7 @@ export default ({
                     e.preventDefault();
                     e.stopPropagation();
                     let idS = uid();
-                    let {aboveOrder,aboveId,orderToInsert}=getOrderAndIdOfTasksAbove(tasks,$task,store);
+                    let {aboveOrder,aboveId,orderToInsert}=getOrderAndIdOfTasksAbove(getVisibleListTasks($task.listId),$task,store);
                     prepareAndAddTaskAndUpdateList($task.listId, aboveOrder, aboveId, orderToInsert, idS, taskTracker, editTask);
                     break;
 
