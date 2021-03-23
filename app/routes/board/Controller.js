@@ -182,10 +182,7 @@ export default ({ store, ref, get, set}) => {
         },
 
         undoDeleteList(id) {
-            listTracker.update(id, {
-                deleted: false,
-                deletedDate: null
-            }, {suppressUpdate: true});
+            listTracker.update(id, { deleted: false, deletedDate: null }, {suppressUpdate: true});
             listTracker.reorder(true);
             listTracker.forceUpdate();
         },
@@ -216,10 +213,7 @@ export default ({ store, ref, get, set}) => {
                 listId,
                 createdDate: new Date().toISOString(),
                 order: orderOfCreatedElement
-            }, {
-                suppressUpdate: true,
-                suppressSync: true
-            });
+            }, {suppressUpdate: true, suppressSync: true});
             taskTracker.reorderList(listId);
             editTask(id);
         },
@@ -243,10 +237,7 @@ export default ({ store, ref, get, set}) => {
                 taskTracker.update(
                     $task.id, {
                         order: visibleTasks[index - 1].order - 0.1
-                    }, {
-                        suppressSync: true,
-                        suppressUpdate: true
-                    }
+                    }, { suppressSync: true, suppressUpdate: true}
                 );
                 taskTracker.reorderList($task.listId);
             }
@@ -261,10 +252,7 @@ export default ({ store, ref, get, set}) => {
             if (index + 1 < visibleTasks.length) {
                 taskTracker.update($task.id, {
                     order: visibleTasks[index + 1].order + 0.1
-                }, {
-                    suppressSync: true,
-                    suppressUpdate: true
-                });
+                }, { suppressSync: true, suppressUpdate: true });
                 taskTracker.reorderList($task.listId);
             }
         },
@@ -305,9 +293,7 @@ export default ({ store, ref, get, set}) => {
             let { order, listId } = data.data;
 
             taskTracker.update(task.id, {listId, order }, {
-                suppressUpdate: true,
-                suppressSync: true
-            });
+                suppressUpdate: true, suppressSync: true });
 
             taskTracker.reorderList(listId);
 
@@ -319,10 +305,7 @@ export default ({ store, ref, get, set}) => {
             let list = e.source.store.get("$list");
             let {order} = data.data;
 
-            listTracker.update(list.id, { order }, {
-                suppressSync: true,
-                suppressUpdate: true
-            });
+            listTracker.update(list.id, { order }, { suppressSync: true,  suppressUpdate: true});
 
             listTracker.reorder();
         },
@@ -379,6 +362,7 @@ export default ({ store, ref, get, set}) => {
 
                 case KeyCode.right:
                     //TODO in final version make subtask more appropiate keyboard shortcut
+                    if (e.ctrlKey) this.moveTaskRight(e, instance);
                     this.makeTaskSubtask(e, $task, instance);
                     break;
 
@@ -428,10 +412,7 @@ export default ({ store, ref, get, set}) => {
             if (index > 0) {
                 listTracker.update($list.id, {
                     order: lists[index - 1].order - 0.1
-                }, {
-                    suppressUpdate: true,
-                    suppressSync: true
-                });
+                }, { suppressUpdate: true, suppressSync: true});
                 listTracker.reorder();
             }
         },
@@ -443,10 +424,7 @@ export default ({ store, ref, get, set}) => {
             if (index + 1 < lists.length) {
                 listTracker.update($list.id, {
                     order: lists[index + 1].order + 0.1
-                }, {
-                    suppressUpdate: true,
-                    suppressSync: true
-                });
+                }, { suppressUpdate: true, suppressSync: true});
                 listTracker.reorder();
             }
         },
@@ -470,5 +448,3 @@ export default ({ store, ref, get, set}) => {
            },
     };
 };
-
-
