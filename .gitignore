@@ -11,3 +11,4 @@ node_modules
 packages
 .DS_Store
 yarn-error.log
+app/data/db/config.js
