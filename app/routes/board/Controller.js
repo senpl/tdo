@@ -186,7 +186,8 @@ export default ({
                     edit: true,
                     createdDate: new Date().toISOString(),
                     boardId: boardId,
-                    order: getListsSorted().length
+                    order: getListsSorted().length,
+                    collapsed: true
                 });
         },
 
