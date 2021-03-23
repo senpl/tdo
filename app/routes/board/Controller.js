@@ -1,49 +1,18 @@
-import {
-    FocusManager,
-    batchUpdatesAndNotify,
-    batchUpdates
-} from "cx/ui";
-import {
-    ArrayRef
-} from "cx/data";
-import {
-    KeyCode,
-    closest
-} from "cx/util";
-import {
-    Toast,
-    Button,
-    Text
-} from "cx/widgets";
+import {FocusManager, batchUpdatesAndNotify, batchUpdates} from "cx/ui";
+import { ArrayRef} from "cx/data";
+import {KeyCode, closest} from "cx/util";
+import { Toast, Button, Text} from "cx/widgets";
 
 import uid from "uid";
-import {
-    BoardTasksTracker
-} from "../../data/BoardTasksTracker";
-import {
-    BoardListsTracker
-} from "../../data/BoardListsTracker";
-import {
-    getAdvancedSearchQueryPredicate
-} from "../../util/getAdvancedSearchQueryPredicate";
-import {
-    showUndoToast
-} from "../../components/toasts";
+import {BoardTasksTracker} from "../../data/BoardTasksTracker";
+import { BoardListsTracker} from "../../data/BoardListsTracker";
+import { getAdvancedSearchQueryPredicate} from "../../util/getAdvancedSearchQueryPredicate";
+import {showUndoToast} from "../../components/toasts";
 const OneDayMs = 24 * 60 * 60 * 1000;
-import {
-    addTaskAndUpdateList,
-    getOrderAndIdOfTasksAbove,
-    getNotDeletedUpperTaskIdForList,
-    prepareAndAddTaskAndUpdateList
-}
+import { addTaskAndUpdateList, getOrderAndIdOfTasksAbove, getNotDeletedUpperTaskIdForList, prepareAndAddTaskAndUpdateList}
 from "../../data/SubtasksUtils";
 
-export default ({
-    store,
-    ref,
-    get,
-    set
-}) => {
+export default ({ store, ref, get, set}) => {
     const lists = ref("$page.lists").as(ArrayRef);
     const tasks = ref("$page.tasks").as(ArrayRef);
     const boardId = get("$route.boardId");
@@ -109,9 +78,7 @@ export default ({
                     task.id, {
                         deleted: true,
                         deletedDate: new Date().toISOString()
-                    }, {
-                        suppressUpdate: true
-                    }
+                    }, {suppressUpdate: true}
                 );
                 taskTracker.reorderList(task.listId, true);
                 refreshTasks();
@@ -130,9 +97,7 @@ export default ({
             taskTracker.update(id, {
                 deleted: false,
                 deletedDate: null
-            }, {
-                suppressUpdate: true
-            });
+            }, {suppressUpdate: true});
             taskTracker.reorderList(listId, true);
             refreshTasks();
         });
@@ -191,9 +156,7 @@ export default ({
                 });
         },
 
-        onSaveList(e, {
-            store
-        }) {
+        onSaveList(e, { store }) {
             let list = store.get("$list");
             listTracker.update(list.id, {
                 ...list,
@@ -202,18 +165,14 @@ export default ({
             });
         },
 
-        onDeleteList(e, {
-            store
-        }) {
+        onDeleteList(e, {  store  }) {
             let list = store.get("$list"),
-                id = list.id;
+            id = list.id;
             listTracker.update(id, {
                 deleted: true,
                 deletedDate: new Date().toISOString(),
                 edit: false
-            }, {
-                suppressUpdate: true
-            });
+            }, {suppressUpdate: true});
             listTracker.reorder(true);
             listTracker.forceUpdate();
 
@@ -226,9 +185,7 @@ export default ({
             listTracker.update(id, {
                 deleted: false,
                 deletedDate: null
-            }, {
-                suppressUpdate: true
-            });
+            }, {suppressUpdate: true});
             listTracker.reorder(true);
             listTracker.forceUpdate();
         },
@@ -244,9 +201,7 @@ export default ({
                 () => undoDeleteTask(task.id, task.listId));
         },
 
-        onAddTask(e, {
-            store
-        }) {
+        onAddTask(e, { store }) {
             e.preventDefault();
             let listId = store.get("$list.id");
             let id = uid();
@@ -269,9 +224,7 @@ export default ({
             editTask(id);
         },
 
-        makeTaskSubtask(e, task, {
-            store
-        }) {
+        makeTaskSubtask(e, task, { store }) {
             e.stopPropagation();
             let taskList = getVisibleListTasks(task.listId);
             let aboveId = getNotDeletedUpperTaskIdForList(taskList, task.id);
@@ -280,14 +233,10 @@ export default ({
             taskTracker.reorderList(task.listId);
         },
 
-        moveTaskUp(e, {
-            store
-        }) {
+        moveTaskUp(e, {store }) {
             e.stopPropagation();
             e.preventDefault();
-            let {
-                $task
-            } = store.getData();
+            let { $task } = store.getData();
             let visibleTasks = getVisibleListTasks($task.listId);
             let index = visibleTasks.indexOf($task);
             if (index > 0) {
@@ -303,14 +252,10 @@ export default ({
             }
         },
 
-        moveTaskDown(e, {
-            store
-        }) {
+        moveTaskDown(e, { store}) {
             e.stopPropagation();
             e.preventDefault();
-            let {
-                $task
-            } = store.getData();
+            let { $task } = store.getData();
             let visibleTasks = getVisibleListTasks($task.listId);
             let index = visibleTasks.indexOf($task);
             if (index + 1 < visibleTasks.length) {
@@ -324,14 +269,10 @@ export default ({
             }
         },
 
-        moveTaskLeft(e, {
-            store
-        }) {
+        moveTaskLeft(e, {store}) {
             e.stopPropagation();
             e.preventDefault();
-            let {
-                $task
-            } = store.getData();
+            let { $task } = store.getData();
             let lists = getListsSorted();
             let listIndex = lists.findIndex(a => a.id == $task.listId);
             if (listIndex > 0) {
@@ -343,14 +284,10 @@ export default ({
             }
         },
 
-        moveTaskRight(e, {
-            store
-        }) {
+        moveTaskRight(e, { store}) {
             e.stopPropagation();
             e.preventDefault();
-            let {
-                $task
-            } = store.getData();
+            let { $task } = store.getData();
             let lists = getListsSorted();
             lists.sort((a, b) => a.order - b.order);
             let listIndex = lists.findIndex(a => a.id == $task.listId);
@@ -363,20 +300,11 @@ export default ({
             }
         },
 
-        onTaskDrop(e, {
-            store,
-            data
-        }) {
+        onTaskDrop(e, {store,data}) {
             let task = e.source.store.get("$task");
-            let {
-                order,
-                listId
-            } = data.data;
+            let { order, listId } = data.data;
 
-            taskTracker.update(task.id, {
-                listId,
-                order
-            }, {
+            taskTracker.update(task.id, {listId, order }, {
                 suppressUpdate: true,
                 suppressSync: true
             });
@@ -387,18 +315,11 @@ export default ({
                 taskTracker.reorderList(task.listId);
         },
 
-        onListDrop(e, {
-            store,
-            data
-        }) {
+        onListDrop(e, { store, data}) {
             let list = e.source.store.get("$list");
-            let {
-                order
-            } = data.data;
+            let {order} = data.data;
 
-            listTracker.update(list.id, {
-                order
-            }, {
+            listTracker.update(list.id, { order }, {
                 suppressSync: true,
                 suppressUpdate: true
             });
@@ -407,12 +328,8 @@ export default ({
         },
 
         onTaskKeyDown(e, instance) {
-            let {
-                store
-            } = instance;
-            let {
-                $task
-            } = store.getData();
+            let { store } = instance;
+            let { $task } = store.getData();
             let code = c => c.charCodeAt(0);
 
             switch (e.keyCode) {
@@ -504,12 +421,8 @@ export default ({
             }
         },
 
-        onMoveListLeft(e, {
-            store
-        }) {
-            let {
-                $list
-            } = store.getData();
+        onMoveListLeft(e, {store}) {
+            let {$list} = store.getData();
             let lists = getListsSorted();
             let index = lists.findIndex(l => l.id == $list.id);
             if (index > 0) {
@@ -523,12 +436,8 @@ export default ({
             }
         },
 
-        onMoveListRight(e, {
-            store
-        }) {
-            let {
-                $list
-            } = store.getData();
+        onMoveListRight(e, {store }) {
+            let { $list } = store.getData();
             let lists = getListsSorted();
             let index = lists.findIndex(l => l.id == $list.id);
             if (index + 1 < lists.length) {
@@ -542,17 +451,13 @@ export default ({
             }
         },
 
-        onEditList(e, {
-            store
-        }) {
+        onEditList(e, {store}) {
             e.preventDefault();
             listTracker.update(store.get("$list.id"), {
                 edit: true
             });
         },
-           showList(e, {
-               store
-           }) {
+           showList(e, {store}) {
                if (store.get("$list.collapsed")) {
                    listTracker.update(store.get("$list.id"), {
                        collapsed: false
