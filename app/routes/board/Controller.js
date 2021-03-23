@@ -548,7 +548,20 @@ export default ({
             listTracker.update(store.get("$list.id"), {
                 edit: true
             });
-        }
+        },
+           showList(e, {
+               store
+           }) {
+               if (store.get("$list.collapsed")) {
+                   listTracker.update(store.get("$list.id"), {
+                       collapsed: false
+                   });
+               } else {
+                   listTracker.update(store.get("$list.id"), {
+                       collapsed: true
+                   });
+               }
+           },
     };
 };
 
