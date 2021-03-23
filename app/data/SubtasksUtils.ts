@@ -1,23 +1,6 @@
 import uid from "uid";
 import sortBy from 'lodash/sortBy';
 
-// function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
-//     let nt = prepareTask(t.listId);
-//     let order = getSortedTaskOrderList(t.listId, t);
-//     let index = order.indexOf($task.order);
-//     //TODO: Fix insertion point
-//     let below = index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
-//     nt.order = below ?
-//         getNextOrder($task.order, order) :
-//         getPrevOrder($task.order, order);
-//     return nt;
-// }
-
-// function prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
-//     let nt = prepareTask(t.listId, t.order, t.parentId, true);
-//     return nt;
-// }
-
 export function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
     taskTracker.add(taskToAdd, {
         suppressUpdate: true,
@@ -31,29 +14,6 @@ export function prepareAndAddTaskAndUpdateList(listId, aboveOrder, aboveId, orde
     addTaskAndUpdateList(taskTracker, task, editTask, idS);
 }
 
-
-// function getPrevOrder(currentOrder, orderList) {
-//     orderList.sort();
-//     let index = orderList.indexOf(currentOrder);
-//     if (index == -1)
-//         return 0;
-//     if (index == 0)
-//         return orderList[0];
-//     if (index == 1)
-//         return orderList[0] - 1;
-//     return (orderList[index - 2] + orderList[index - 1]) / 2;
-// }
-// function getNextOrder(currentOrder, orderList) {
-//     orderList.sort();
-//     let index = orderList.indexOf(currentOrder);
-//     if (index == -1)
-//         return 0;
-//     if (index + 1 == orderList.length)
-//         return orderList[orderList.length - 1];
-//     if (index + 2 == orderList.length)
-//         return orderList[orderList.length - 1] + 1;
-//     return (orderList[index + 1] + orderList[index + 2]) / 2;
-// }
 
 export function getOrderList(items, filter = (item) => true) {
     let list = items.filter(item => !item.deleted && filter(item)).map(a => a.order);
@@ -70,10 +30,6 @@ export const getSortedTasks = (listId,tasks) => {
     let sortedList = sortBy(tasks.get(), "order");
     return getTaskList(sortedList, t => t.listId == listId);
 };
-
-// const getSortedTaskOrderList = (listId,tasks) => {
-//     return getOrderList(tasks.get(), t => t.listId == listId);
-// }
 
 export const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
     let foundedMainTaskToAdd = 0;
@@ -108,26 +64,6 @@ export const prepareTask = (listId, insertPosition = 0, parentId = 0, taskAddAsF
         parentId: parentId
     };
 };
-
-// const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
-//     let modifiedTasks = tasksToUpdate;
-//     for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
-//         const task = modifiedTasks[index];
-//         task.order = index + 2;
-//         modifiedTasks[index] = task;
-//     }
-//     return modifiedTasks;
-// };
-
-// const getDeletedIds = (list) => {
-//     let foundedIdToDelete = [];
-//     list.forEach(element => {
-//         if (element.deleted) {
-//             foundedIdToDelete.push(element.id)
-//         }
-//     });
-//     return foundedIdToDelete;
-// };
 
 export const getNotDeletedUpperOrderIdForList = (list, taskId = 0) => {
     let foundedMainTaskOrder = 0;
@@ -187,3 +123,67 @@ export function getOrderAndIdOfTasksAbove(tasks, $task, store) {
         //     taskTracker.reorderList(listId);
         //     editTask(id);
         // },
+
+        // function getPrevOrder(currentOrder, orderList) {
+//     orderList.sort();
+//     let index = orderList.indexOf(currentOrder);
+//     if (index == -1)
+//         return 0;
+//     if (index == 0)
+//         return orderList[0];
+//     if (index == 1)
+//         return orderList[0] - 1;
+//     return (orderList[index - 2] + orderList[index - 1]) / 2;
+// }
+// function getNextOrder(currentOrder, orderList) {
+//     orderList.sort();
+//     let index = orderList.indexOf(currentOrder);
+//     if (index == -1)
+//         return 0;
+//     if (index + 1 == orderList.length)
+//         return orderList[orderList.length - 1];
+//     if (index + 2 == orderList.length)
+//         return orderList[orderList.length - 1] + 1;
+//     return (orderList[index + 1] + orderList[index + 2]) / 2;
+// }
+
+// const updateTasksOrderBelow = (tasksToUpdate, orderToStart) => {
+//     let modifiedTasks = tasksToUpdate;
+//     for (let index = orderToStart - 1; index < modifiedTasks.length; index++) {
+//         const task = modifiedTasks[index];
+//         task.order = index + 2;
+//         modifiedTasks[index] = task;
+//     }
+//     return modifiedTasks;
+// };
+
+// const getDeletedIds = (list) => {
+//     let foundedIdToDelete = [];
+//     list.forEach(element => {
+//         if (element.deleted) {
+//             foundedIdToDelete.push(element.id)
+//         }
+//     });
+//     return foundedIdToDelete;
+// };
+
+// function getTasksInNewOrder(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+//     let nt = prepareTask(t.listId);
+//     let order = getSortedTaskOrderList(t.listId, t);
+//     let index = order.indexOf($task.order);
+//     //TODO: Fix insertion point
+//     let below = index < order.length - 1 && e.keyCode === code("O") && !e.shiftKey;
+//     nt.order = below ?
+//         getNextOrder($task.order, order) :
+//         getPrevOrder($task.order, order);
+//     return nt;
+// }
+
+// function prepereSubtaskTasks(prepareTask, t, getSortedTaskOrderList, $task, e, code) {
+//     let nt = prepareTask(t.listId, t.order, t.parentId, true);
+//     return nt;
+// }
+
+// const getSortedTaskOrderList = (listId,tasks) => {
+//     return getOrderList(tasks.get(), t => t.listId == listId);
+// }
