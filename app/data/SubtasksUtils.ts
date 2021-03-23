@@ -1,5 +1,4 @@
 import uid from "uid";
-import sortBy from 'lodash/sortBy';
 
 export function addTaskAndUpdateList(taskTracker, taskToAdd, editTask, id) {
     taskTracker.add(taskToAdd, {
@@ -25,11 +24,6 @@ export function getTaskList(items, filter = (item) => true) {
     let list = items.filter(item => !item.deleted );
     return list;
 }
-
-export const getSortedTasks = (listId,tasks) => {
-    let sortedList = sortBy(tasks.get(), "order");
-    return getTaskList(sortedList, t => t.listId == listId);
-};
 
 export const getNotDeletedUpperTaskIdForList = (list, taskId = 0) => {
     let foundedMainTaskToAdd = 0;
@@ -87,6 +81,11 @@ export function getOrderAndIdOfTasksAbove(tasks, $task, store) {
     return { aboveOrder, aboveId, orderToInsert };
 }
 
+
+// export const getSortedTasks = (listId,tasks) => {
+//     let sortedList = sortBy(tasks.get(), "order");
+//     return getTaskList(sortedList, t => t.listId == listId);
+// };
 // const getMainIdAbove = (list, taskId = 0) => {
 //     let foundedMainTaskToAdd = 0;
 //     let finalUpperId = -1;
