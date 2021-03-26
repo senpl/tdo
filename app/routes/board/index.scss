@@ -56,9 +56,13 @@
 
 .menu-item {
   .drag-icon {
+    display: inline-block;
+    margin-right: -10px;
     visibility: hidden;
   }
   &:hover .drag-icon {
+    display: inline-block;
+    margin-right: -15px;
     visibility: visible;
   }
 }
